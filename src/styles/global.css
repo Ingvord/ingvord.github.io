@@ -13,8 +13,20 @@
   --font-body: 'Source Serif 4', Georgia, serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
+  --site-width: 960px;
   --prose-width: 68ch;
-  --page-pad: clamp(1.25rem, 5vw, 3rem);
+  --page-pad: clamp(1.25rem, 5vw, 2rem);
+}
+
+html[data-theme="light"] {
+  --ink: #F6F8FA;
+  --panel: #FFFFFF;
+  --text: #0D1117;
+  --muted: #57606A;
+  --trace: #0969DA;
+  --p99: #9A6700;
+  --border: #D0D7DE;
+  color-scheme: light;
 }
 
 *, *::before, *::after {
@@ -27,6 +39,7 @@ html {
   font-size: 18px;
   color-scheme: dark;
   scroll-behavior: smooth;
+  background-color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -118,7 +131,7 @@ p:first-child {
 
 .container {
   width: 100%;
-  max-width: calc(var(--prose-width) + var(--page-pad) * 2);
+  max-width: var(--site-width);
   margin-inline: auto;
   padding-inline: var(--page-pad);
 }

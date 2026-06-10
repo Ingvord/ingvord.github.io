@@ -14,22 +14,64 @@ const currentPath = Astro.url.pathname;
       <span class="wordmark-name">Igor Khokhriakov</span>
       <span class="wordmark-role">Staff Software Engineer</span>
     </a>
-    <nav aria-label="Primary navigation">
-      <ul class="nav-list">
-        {navLinks.map(link => (
-          <li>
-            <a
-              href={link.href}
-              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <div class="header-right">
+      <nav aria-label="Primary navigation">
+        <ul class="nav-list">
+          {navLinks.map(link => (
+            <li>
+              <a
+                href={link.href}
+                class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button id="theme-toggle" class="theme-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+        <!-- Moon: shown in dark mode -->
+        <svg class="icon icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+        </svg>
+        <!-- Sun: shown in light mode -->
+        <svg class="icon icon-sun hidden" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+
+  function getTheme(): 'dark' | 'light' {
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function setTheme(theme: 'dark' | 'light') {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    localStorage.setItem('theme', theme);
+    syncIcon(theme);
+  }
+
+  function syncIcon(theme: 'dark' | 'light') {
+    toggle?.querySelector('.icon-moon')?.classList.toggle('hidden', theme === 'light');
+    toggle?.querySelector('.icon-sun')?.classList.toggle('hidden', theme === 'dark');
+  }
+
+  toggle?.addEventListener('click', () => {
+    setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+  });
+
+  syncIcon(getTheme());
+</script>
 
 <style>
   .site-header {
@@ -46,6 +88,12 @@ const currentPath = Astro.url.pathname;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
     gap: 2rem;
   }
 
@@ -99,12 +147,46 @@ const currentPath = Astro.url.pathname;
     opacity: 1;
   }
 
+  .theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .theme-btn:hover {
+    color: var(--text);
+  }
+
+  .theme-btn:focus-visible {
+    outline: 2px solid var(--trace);
+    outline-offset: 2px;
+  }
+
+  .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .hidden {
+    display: none;
+  }
+
   @media (max-width: 480px) {
     .nav-list {
       gap: 1.25rem;
     }
     .wordmark-role {
       display: none;
+    }
+    .header-right {
+      gap: 1rem;
     }
   }
 </style>
