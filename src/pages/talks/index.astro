@@ -1,0 +1,166 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const talks = [
+  {
+    title: 'Reactive Programming for Tango-Controls',
+    venue: '40th Tango Users Meeting',
+    year: 2026,
+    why: 'Composing async event streams from heterogeneous scientific instruments using RxJava — the architecture that lets operator UIs stay live without polling.',
+    links: [
+      { label: 'slides', href: '#' },
+    ],
+  },
+  {
+    title: 'How I Saved $200K with 0 Code in K8s',
+    venue: 'WeAreDevelopers World Congress',
+    year: 2024,
+    why: 'Infrastructure cost reduction as a platform decision — how VPA + rightsizing found the savings a migration alone had missed.',
+    links: [
+      { label: 'video', href: 'https://www.wearedevelopers.com/world-congress' },
+    ],
+  },
+  {
+    title: 'Performance Benchmarking of Node.js, Rust, Python and Go',
+    venue: 'NOBUGS 2024',
+    year: 2024,
+    why: 'Methodology for reproducible cross-language benchmarks: how to eliminate toolchain bias before comparing numbers.',
+    links: [
+      { label: 'DOI', href: 'https://doi.org/10.5281/zenodo.15056189' },
+    ],
+  },
+  {
+    title: 'Migrating RCSB.org to Kubernetes — Observability First',
+    venue: 'SCaLE 20x',
+    year: 2023,
+    why: 'Instrumented with Elastic APM before migrating, surfaced the sequential Elasticsearch pattern, cut P99 33% — the migration became an observability project.',
+    links: [
+      { label: 'video', href: 'https://www.youtube.com/watch?v=7FTTDM0LiIk' },
+    ],
+  },
+  {
+    title: 'Observability of SCADA Systems with Elastic APM',
+    venue: 'ElasticON / ESRF',
+    year: 2022,
+    why: 'Applying APM primitives designed for web services to low-level instrument control: distributed tracing across Tango device servers.',
+    links: [
+      { label: 'slides', href: 'https://www.elastic.co/videos/observability-of-scada-systems-with-elastic-apm' },
+    ],
+  },
+  {
+    title: 'Tango REST API — A Standard for Distributed Control',
+    venue: 'ICALEPCS',
+    year: 2019,
+    why: 'The journey from prototype to adopted industry standard across 100+ facilities, and why the boundary had to be data, not shared code.',
+    links: [],
+  },
+];
+---
+
+<Base
+  title="Talks — Igor Khokhriakov"
+  description="Conference talks by Igor Khokhriakov on distributed systems, Kubernetes, observability, and scientific infrastructure."
+>
+  <Nav />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="section-marker">Talks</p>
+        <h1>Conference talks</h1>
+        <p class="page-intro">
+          Curated selection — each chosen because the material is transferable,
+          not just a project announcement.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <ol class="talks-list" reversed>
+          {talks.map((talk) => (
+            <li class="talk-item">
+              <div class="talk-header">
+                <h2 class="talk-title">{talk.title}</h2>
+                <span class="talk-meta mono">{talk.venue} · {talk.year}</span>
+              </div>
+              <p class="talk-why">{talk.why}</p>
+              {talk.links.length > 0 && (
+                <div class="talk-links">
+                  {talk.links.map(link => (
+                    <a href={link.href} target="_blank" rel="noopener" class="proof-link">
+                      [{link.label}]
+                    </a>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: none;
+  }
+
+  .page-intro {
+    margin-top: 1rem;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .talks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .talk-item {
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .talk-item:last-child {
+    border-bottom: none;
+  }
+
+  .talk-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .talk-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .talk-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .talk-why {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .talk-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+  }
+</style>

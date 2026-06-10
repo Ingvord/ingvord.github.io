@@ -1,0 +1,437 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import HeroTrace from '../components/HeroTrace.astro';
+---
+
+<Base
+  title="Igor Khokhriakov — Staff Software Engineer"
+  description="Staff Software Engineer specializing in Java/JVM, distributed systems, Kubernetes, and Elasticsearch. 17 years finding and removing the blockers that slow down the next phase of work."
+>
+  <Nav />
+
+  <main>
+    <!-- ─── HERO ─── -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <div class="container">
+        <p class="hero-eyebrow mono">
+          Java / JVM · Distributed Systems · Kubernetes · Elasticsearch
+        </p>
+
+        <h1 id="hero-headline">
+          Distributed systems<br />don't fail loudly.
+        </h1>
+
+        <p class="hero-prose">
+          They degrade quietly, accumulate debt silently, and block the next phase of work
+          long before anyone names the blocker. I've spent 17 years finding those blockers
+          and removing them.
+        </p>
+
+        <HeroTrace />
+
+        <div class="hero-cta">
+          <a href="#proof" class="btn btn-primary">Read the proof ↓</a>
+          <a href="mailto:igor.khokhriakov@gmail.com" class="btn btn-secondary">
+            Message me — I respond to everything
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── THE WORK TAKES THREE FORMS ─── -->
+    <section id="proof" aria-labelledby="work-heading">
+      <div class="container">
+        <p class="section-marker">The work takes three forms</p>
+
+        <!-- 1 · Build -->
+        <div class="work-block">
+          <h2 class="work-number" id="work-heading">
+            <span class="work-num-label mono">1 ·</span>
+            Build the platform that makes the next thing possible
+          </h2>
+
+          <div class="work-body">
+            <p>
+              RCSB Protein Data Bank (<span class="metric">5B requests/yr</span>,
+              <span class="metric">14.5M users</span>): integrated Elastic APM,
+              surfaced sequential Elasticsearch execution no application metric had caught,
+              cut P99 latency <span class="metric">33%</span> with zero caller-code changes.
+            </p>
+            <p class="proof-row">
+              <a href="https://www.youtube.com/watch?v=7FTTDM0LiIk" target="_blank" rel="noopener" class="proof-link">[video: SCaLE 20x — RCSB → K8s]</a>
+              <a href="https://www.elastic.co/videos/observability-of-scada-systems-with-elastic-apm" target="_blank" rel="noopener" class="proof-link">[slides: Observability with Elastic APM]</a>
+            </p>
+
+            <p>
+              DESY: ISPyB refactor that let the beamline team bring one of the facility's most
+              commercially significant beamlines live.
+            </p>
+
+            <p>
+              OpenStack → Kubernetes migration:
+              <span class="metric">$200K</span> direct savings.
+            </p>
+            <p class="proof-row">
+              <a href="https://www.wearedevelopers.com/world-congress" target="_blank" rel="noopener" class="proof-link">[video: WeAreDevelopers World Congress 2024]</a>
+            </p>
+
+            <p>
+              Now building: a fully automated trading-strategy platform — concept to live
+              production with no manual handoffs.
+            </p>
+            <p class="proof-row">
+              <a href="/trading-platform/" class="proof-link">[case study]</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- 2 · Evidence -->
+        <div class="work-block">
+          <h2 class="work-number">
+            <span class="work-num-label mono">2 ·</span>
+            Generate the evidence that prevents the wrong thing from being built
+          </h2>
+
+          <div class="work-body">
+            <p>
+              Code-level assessment of a distributed storage engine: modeled
+              <span class="metric">5×–10×</span> growth, located where metadata coordination,
+              request fan-out, and object-storage latency combine into production constraints —
+              before any appeared.
+            </p>
+
+            <p>
+              <span class="metric">72-scenario</span> load study of SciCat's metadata API;
+              showed <span class="metric">20+</span> European and US facilities where their
+              scaling ceiling sits.
+            </p>
+            <p class="proof-row">
+              <a href="https://www.youtube.com/watch?v=nobugs2024" target="_blank" rel="noopener" class="proof-link">[video: NOBUGS 2024]</a>
+              <a href="https://doi.org/10.5281/zenodo.15056189" target="_blank" rel="noopener" class="proof-link">[DOI: 10.5281/zenodo.15056189]</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 · Method -->
+        <div class="work-block">
+          <h2 class="work-number">
+            <span class="work-num-label mono">3 ·</span>
+            Extract the method and leave it behind
+          </h2>
+
+          <div class="work-body">
+            <p>
+              Tango REST specification → industry standard across
+              <span class="metric">100+</span> facilities.
+            </p>
+
+            <p>
+              Published, reusable benchmarking framework and load-testing methodology.
+            </p>
+            <p class="proof-row">
+              <a href="https://zenodo.org/search?q=khokhriakov" target="_blank" rel="noopener" class="proof-link">[Zenodo records]</a>
+              <a href="https://github.com/waltz-controls" target="_blank" rel="noopener" class="proof-link">[GitHub: waltz-controls]</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── STILL SHIPPING ─── -->
+    <section aria-labelledby="shipping-heading">
+      <div class="container">
+        <p class="section-marker">Still shipping</p>
+        <p id="shipping-heading" class="shipping-statement">
+          Production Java is where I'm sharpest — including low-level
+          <code>Unsafe</code>-based work — and I intend to keep shipping it.
+        </p>
+        <p class="stack-line mono">
+          Java/JVM · Node/TypeScript · Rust · C++ · ELK · Kubernetes
+        </p>
+        <p class="stack-note">
+          Python for tooling and analysis, not production.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─── SELECTED TALKS ─── -->
+    <section aria-labelledby="talks-heading">
+      <div class="container">
+        <p class="section-marker">Selected talks</p>
+        <h2 id="talks-heading" class="sr-only">Selected talks</h2>
+
+        <ol class="talks-list">
+          <li class="talk-row">
+            <div class="talk-main">
+              <span class="talk-title">How I Saved $200K with 0 Code in K8s</span>
+              <span class="talk-meta mono">WeAreDevelopers World Congress · 2024</span>
+            </div>
+            <p class="talk-why">Infrastructure cost reduction as a platform decision, not a cost-cutting exercise.</p>
+            <div class="talk-links">
+              <a href="https://www.wearedevelopers.com/world-congress" target="_blank" rel="noopener" class="proof-link">[video]</a>
+            </div>
+          </li>
+
+          <li class="talk-row">
+            <div class="talk-main">
+              <span class="talk-title">Migrating RCSB.org to Kubernetes</span>
+              <span class="talk-meta mono">SCaLE 20x · 2023</span>
+            </div>
+            <p class="talk-why">How a migration becomes an observability project when you instrument first.</p>
+            <div class="talk-links">
+              <a href="https://www.youtube.com/watch?v=7FTTDM0LiIk" target="_blank" rel="noopener" class="proof-link">[video]</a>
+            </div>
+          </li>
+
+          <li class="talk-row">
+            <div class="talk-main">
+              <span class="talk-title">Performance Benchmarking of Node.js, Rust, Python and Go</span>
+              <span class="talk-meta mono">NOBUGS 2024</span>
+            </div>
+            <p class="talk-why">Methodology for eliminating tool bias from benchmark results at 20+ facilities.</p>
+            <div class="talk-links">
+              <a href="https://doi.org/10.5281/zenodo.15056189" target="_blank" rel="noopener" class="proof-link">[DOI]</a>
+            </div>
+          </li>
+
+          <li class="talk-row">
+            <div class="talk-main">
+              <span class="talk-title">Reactive Programming for Tango-Controls</span>
+              <span class="talk-meta mono">40th Tango Users Meeting · 2026</span>
+            </div>
+            <p class="talk-why">Composing async event streams in scientific instrument control systems.</p>
+            <div class="talk-links">
+              <a href="/talks/" class="proof-link">[slides]</a>
+            </div>
+          </li>
+        </ol>
+
+        <p class="talks-more">
+          <a href="/talks/" class="mono">Full list of talks →</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    padding-block: clamp(4rem, 10vw, 7rem);
+    border-top: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    max-width: 16ch;
+  }
+
+  .hero-prose {
+    margin-top: 1.5rem;
+    max-width: 55ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    padding: 0.65em 1.25em;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: opacity 0.15s ease, background 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--trace);
+    color: var(--ink);
+    border-color: var(--trace);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--trace);
+    border-color: var(--trace);
+  }
+
+  .btn-secondary:hover {
+    background: color-mix(in srgb, var(--trace) 10%, transparent);
+    opacity: 1;
+  }
+
+  /* ── Work blocks ── */
+  .work-block {
+    margin-bottom: 3.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .work-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .work-number {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 1.25rem;
+  }
+
+  .work-num-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .work-body {
+    padding-left: calc(0.75rem + 1.5ch);
+  }
+
+  .work-body p + p {
+    margin-top: 1em;
+  }
+
+  .proof-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem !important;
+  }
+
+  /* ── Still shipping ── */
+  .shipping-statement {
+    font-size: 1.05rem;
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  .stack-line {
+    margin-top: 1.25rem;
+    color: var(--trace);
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+
+  .stack-note {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  /* ── Talks ── */
+  .talks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: talks;
+  }
+
+  .talk-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 0.25rem 1rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .talk-row:last-child {
+    border-bottom: none;
+  }
+
+  .talk-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .talk-title {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .talk-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .talk-why {
+    grid-column: 1;
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .talk-links {
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .talks-more {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .talks-more a {
+    color: var(--muted);
+  }
+
+  .talks-more a:hover {
+    color: var(--trace);
+    opacity: 1;
+  }
+
+  /* ── Utilities ── */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 520px) {
+    .talk-row {
+      grid-template-columns: 1fr;
+    }
+    .talk-links {
+      grid-row: auto;
+      grid-column: 1;
+      margin-top: 0.5rem;
+    }
+  }
+</style>

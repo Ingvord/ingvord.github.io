@@ -1,0 +1,350 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  title="Trading Platform Case Study — Igor Khokhriakov"
+  description="From idea to live trading bot in one command: an autonomous multi-agent pipeline using AWS Step Functions, ECS Fargate, and LLM agents."
+>
+  <Nav />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="section-marker">Case Study</p>
+        <h1>From Idea to Live Bot in One Command</h1>
+        <p class="status-badge mono">
+          live on AWS eu-central-1 · testnet grace period, mainnet one env var away · <span class="metric">~$2.50/month</span> total infra
+        </p>
+      </div>
+    </section>
+
+    <article class="case-study">
+      <div class="container">
+
+        <!-- Pipeline diagram -->
+        <div class="diagram-wrap">
+          <svg class="pipeline-svg" viewBox="0 0 660 100" xmlns="http://www.w3.org/2000/svg" aria-label="Pipeline: Telegram command → Step Functions → Designer → Selector → Researcher → Deployer → Live Lambda + Telegram report">
+            <!-- Nodes -->
+            <rect class="node node-input" x="0" y="30" width="80" height="40" rx="4"/>
+            <text class="node-label" x="40" y="54">/pipeline</text>
+
+            <rect class="node node-step" x="110" y="30" width="80" height="40" rx="4"/>
+            <text class="node-label" x="150" y="48">Step</text>
+            <text class="node-label" x="150" y="62">Functions</text>
+
+            <rect class="node node-llm" x="220" y="30" width="80" height="40" rx="4"/>
+            <text class="node-label" x="260" y="54">Designer</text>
+
+            <rect class="node node-det" x="330" y="30" width="80" height="40" rx="4"/>
+            <text class="node-label" x="370" y="54">Selector</text>
+
+            <rect class="node node-det" x="440" y="30" width="80" height="40" rx="4"/>
+            <text class="node-label" x="480" y="54">Researcher</text>
+
+            <rect class="node node-llm" x="550" y="30" width="100" height="40" rx="4"/>
+            <text class="node-label" x="600" y="54">Deployer</text>
+
+            <!-- Arrows -->
+            <line x1="80" y1="50" x2="110" y2="50" class="arrow"/>
+            <polygon points="107,46 115,50 107,54" class="arrowhead"/>
+            <line x1="190" y1="50" x2="220" y2="50" class="arrow"/>
+            <polygon points="217,46 225,50 217,54" class="arrowhead"/>
+            <line x1="300" y1="50" x2="330" y2="50" class="arrow"/>
+            <polygon points="327,46 335,50 327,54" class="arrowhead"/>
+            <line x1="410" y1="50" x2="440" y2="50" class="arrow"/>
+            <polygon points="437,46 445,50 437,54" class="arrowhead"/>
+            <line x1="520" y1="50" x2="550" y2="50" class="arrow"/>
+            <polygon points="547,46 555,50 547,54" class="arrowhead"/>
+
+            <!-- Legend -->
+            <rect class="node node-llm" x="0" y="85" width="12" height="8" rx="1"/>
+            <text class="legend-label" x="16" y="93">LLM agent</text>
+            <rect class="node node-det" x="90" y="85" width="12" height="8" rx="1"/>
+            <text class="legend-label" x="106" y="93">Deterministic</text>
+            <rect class="node node-input" x="200" y="85" width="12" height="8" rx="1"/>
+            <text class="legend-label" x="216" y="93">Trigger / output</text>
+          </svg>
+        </div>
+
+        <section class="cs-section">
+          <h2>The problem</h2>
+          <p>
+            The lifecycle of a new trading strategy used to look like this: write the idea
+            as Backtrader code, smoke-test it by hand, run an Optuna notebook, copy-paste
+            the results CSV, analyse parameters in a REPL, write a spec document manually,
+            translate the logic into the production bot's codebase, configure YAML, deploy,
+            and hope. Every handoff was manual, undocumented at the boundary, and dependent
+            on human memory between sessions. The gap between "idea" and "live bot" was
+            measured in days.
+          </p>
+          <p>
+            This is the same failure mode I've spent years removing from scientific
+            infrastructure: the system works, but every transition through it requires a
+            person to carry context that nothing else holds.
+          </p>
+        </section>
+
+        <section class="cs-section">
+          <h2>What it does now</h2>
+          <p>One Telegram command:</p>
+          <pre><code>/pipeline "fast ema crosses slow ema" 5</code></pre>
+          <p>
+            produces a live deployed Lambda bot in a single unattended execution.
+            Behind that command, AWS Step Functions orchestrates four agents on ECS Fargate:
+          </p>
+          <ol class="agent-list">
+            <li>
+              <strong>Designer</strong> (LLM) — turns the natural-language idea into a
+              strategy spec, a pure-Python implementation, and smoke tests.
+            </li>
+            <li>
+              <strong>Selector</strong> (deterministic) — quick single-pass backtest on every
+              candidate instrument (~1 minute per symbol), ranked by composite score.
+            </li>
+            <li>
+              <strong>Researcher</strong> (deterministic) — Optuna TPE optimisation on the
+              top three candidates only, with equity charts as evidence.
+            </li>
+            <li>
+              <strong>Deployer</strong> (LLM) — generates the production Lambda from the spec,
+              runs contract tests, executes <code>sam deploy</code>, registers the bot in the
+              fleet config, and reports to Telegram.
+            </li>
+          </ol>
+          <p>
+            Fleet management afterwards: <code>/fleet</code>, <code>/pause</code>,
+            <code>/resume</code>, <code>/kill</code>, <code>/pnl</code>.
+          </p>
+        </section>
+
+        <section class="cs-section">
+          <h2>The decisions worth writing down</h2>
+
+          <h3>Strategy-as-spec</h3>
+          <p>
+            The canonical artifact is <code>strategy_spec.json</code>: typed parameters with
+            ranges, a state-machine definition, signal types, and a natural-language
+            <code>logic</code> block. The Designer generates it, the Researcher updates it
+            with optimised values, the Deployer reads it to generate production code. Research
+            and production never share a framework; they share a contract. This is the same
+            instinct as the Tango REST specification: when two worlds must cooperate, define
+            the boundary as data, not shared code.
+          </p>
+
+          <h3>Screen cheap, optimise expensive</h3>
+          <p>
+            The original design ran optimisation before instrument selection. Full Optuna
+            (<span class="metric">200 trials</span>) across eight-plus symbols costs hours, while a
+            single default-parameter backtest costs a minute and eliminates instruments that have
+            no affinity with the strategy. The pipeline now spends its compute where the
+            candidates have already earned it.
+          </p>
+
+          <h3>Notify, don't block</h3>
+          <p>
+            All four agents run unattended. The Deployer sends a full summary to Telegram
+            before deploying. Stage duration is unpredictable (Fargate capacity allocation);
+            blocking approval gates become a race between token expiry and a human noticing
+            a message in time. The gate infrastructure remains in the codebase, switchable
+            per agent, for stages that may need a hard stop. <code>/pause</code> and
+            <code>/kill</code> exist for when seeing is not enough.
+          </p>
+
+          <h3>LLM agents only where judgment lives</h3>
+          <p>
+            Two of the four agents use an LLM (idea→spec, spec→code). Screening and
+            optimisation are deterministic, reproducible, cheap. Drawing that line
+            deliberately keeps the pipeline auditable: every number that reaches production
+            came from a backtest, not a model's opinion.
+          </p>
+        </section>
+
+        <section class="cs-section">
+          <h2>Status and numbers</h2>
+          <p class="status-line mono">
+            Live on AWS (eu-central-1) · testnet grace period · mainnet: one env var away
+          </p>
+          <ul>
+            <li>Total infra cost: <span class="metric">~$2.50/month</span></li>
+            <li>Production Lambda cold start: irrelevant at 5-minute tick intervals</li>
+            <li>Per-bot runtime cost: <span class="metric">~$0.01/month</span></li>
+            <li>Java 21 / GraalVM native-image path proven in reference bot, scheduled when fleet reaches 3+ profitable bots</li>
+          </ul>
+        </section>
+
+        <section class="cs-section">
+          <h2>Stack</h2>
+          <p class="stack-list mono">
+            Python 3.12 agents (Claude via Bedrock) · AWS Step Functions · ECS Fargate ·
+            Lambda · DynamoDB · S3 · EventBridge · SAM/CloudFormation · Backtrader ·
+            Optuna · Telegram Bot API · Java 21 / GraalVM (reference production bot)
+          </p>
+        </section>
+
+        <section class="cs-section cs-framing">
+          <p>
+            What this demonstrates, in the framing of the rest of this site:
+            <em>build the platform that makes the next thing possible</em>
+            (idea to live bot, one command);
+            <em>generate evidence before committing</em>
+            (screen, optimise, promote — testnet to mainnet, Python to Java, each gate
+            opened by proof);
+            <em>leave the method behind</em>
+            (strategy-as-spec, the bug catalog, notify-don't-block as an operational pattern).
+            The system is small. The discipline is the product.
+          </p>
+        </section>
+
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: none;
+  }
+
+  .status-badge {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* Pipeline diagram */
+  .diagram-wrap {
+    margin-block: 2rem;
+    padding: 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  .pipeline-svg {
+    width: 100%;
+    min-width: 500px;
+    height: auto;
+  }
+
+  .node {
+    fill: var(--panel);
+    stroke-width: 1.5;
+  }
+
+  .node-llm {
+    stroke: var(--p99);
+  }
+
+  .node-det {
+    stroke: var(--trace);
+  }
+
+  .node-input {
+    stroke: var(--muted);
+  }
+
+  .node-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--text);
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .arrow {
+    stroke: var(--muted);
+    stroke-width: 1.5;
+  }
+
+  .arrowhead {
+    fill: var(--muted);
+  }
+
+  .legend-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--muted);
+    dominant-baseline: middle;
+  }
+
+  /* Article sections */
+  .case-study {
+    padding-bottom: 4rem;
+  }
+
+  .cs-section {
+    padding-top: 2.5rem;
+    padding-bottom: 0;
+    border-top: 1px solid var(--border);
+    margin-top: 2.5rem;
+  }
+
+  .cs-section:first-child {
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .cs-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .cs-section h3 {
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: var(--trace);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .agent-list {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .agent-list li {
+    margin-top: 0.75rem;
+  }
+
+  .stack-list {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  .status-line {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .cs-framing {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .cs-framing p {
+    font-style: italic;
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .cs-framing em {
+    color: var(--text);
+    font-style: normal;
+    font-weight: 600;
+  }
+</style>

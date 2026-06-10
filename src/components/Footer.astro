@@ -1,0 +1,79 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-availability">
+      Currently exploring Staff and Principal Engineer roles at infrastructure product
+      companies and systematic trading firms. Fully remote, async-first.
+    </p>
+    <p class="footer-contact">
+      If you have a system that's blocking what comes next —&nbsp;
+      <a href="mailto:igor.khokhriakov@gmail.com">email</a>
+      <span class="sep">·</span>
+      <a href="https://linkedin.com/in/igor-khokhriakov" target="_blank" rel="noopener">LinkedIn</a>
+      <span class="sep">·</span>
+      <a href="https://github.com/ingvord" target="_blank" rel="noopener">GitHub</a>.
+      I respond to everything.
+    </p>
+    <div class="footer-meta">
+      <span>© {year}</span>
+      <span class="sep">·</span>
+      <span>Built with Astro, deployed by GitHub Actions</span>
+      <span class="sep">·</span>
+      <a href="https://github.com/ingvord/ingvord.github.io" target="_blank" rel="noopener">source</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: 3rem;
+    margin-top: 4rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-availability {
+    color: var(--text);
+    font-size: 0.95rem;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .footer-contact {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .footer-contact a {
+    color: var(--trace);
+  }
+
+  .footer-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .sep {
+    color: var(--border);
+  }
+</style>

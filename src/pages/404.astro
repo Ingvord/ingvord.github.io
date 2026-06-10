@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base title="404 — Not found · Igor Khokhriakov">
+  <Nav />
+
+  <main>
+    <section class="not-found">
+      <div class="container">
+        <p class="code mono">404</p>
+        <p class="message">
+          This page degraded silently and is no longer here.
+        </p>
+        <a href="/" class="back-link mono">← Back to ingvord.github.io</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    min-height: 60vh;
+    border-top: none;
+  }
+
+  .code {
+    font-size: clamp(4rem, 15vw, 8rem);
+    color: var(--border);
+    line-height: 1;
+    margin: 0;
+  }
+
+  .message {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--trace);
+    letter-spacing: 0.03em;
+  }
+</style>

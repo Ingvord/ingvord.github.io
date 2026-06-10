@@ -1,0 +1,168 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const highlighted = [
+  {
+    title: 'Performance Benchmarking of Scientific Metadata APIs: Node.js, Rust, Python, and Go',
+    venue: 'NOBUGS 2024',
+    year: 2024,
+    doi: '10.5281/zenodo.15056189',
+    href: 'https://doi.org/10.5281/zenodo.15056189',
+    summary: '72-scenario load study showing where the SciCat metadata API ceiling sits across 20+ facilities. Includes the reusable benchmarking framework.',
+  },
+  {
+    title: 'Tango REST API — An HTTP Interface for the Tango Controls Framework',
+    venue: 'ICALEPCS 2019',
+    year: 2019,
+    doi: null,
+    href: 'https://accelconf.web.cern.ch/icalepcs2019/',
+    summary: 'Specification design and adoption path for the REST interface that became the industry standard across 100+ scientific facilities.',
+  },
+  {
+    title: 'Waltz — A Generic Web Client for Tango Controls',
+    venue: 'ICALEPCS 2017',
+    year: 2017,
+    doi: null,
+    href: 'https://accelconf.web.cern.ch/icalepcs2017/',
+    summary: 'Architecture of the open-source control-room web client, including the reactive data model that keeps instrument state live without polling.',
+  },
+];
+---
+
+<Base
+  title="Publications — Igor Khokhriakov"
+  description="Selected publications by Igor Khokhriakov on scientific infrastructure, distributed systems, and performance benchmarking."
+>
+  <Nav />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="section-marker">Publications</p>
+        <h1>Publications</h1>
+        <p class="page-intro">
+          Three highlighted papers. Full list on
+          <a href="https://scholar.google.com/scholar?q=Igor+Khokhriakov" target="_blank" rel="noopener">Google Scholar</a>
+          and
+          <a href="https://zenodo.org/search?q=khokhriakov" target="_blank" rel="noopener">Zenodo</a>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <ol class="pub-list">
+          {highlighted.map((pub) => (
+            <li class="pub-item">
+              <div class="pub-header">
+                <a href={pub.href} target="_blank" rel="noopener" class="pub-title">
+                  {pub.title}
+                </a>
+                <span class="pub-meta mono">{pub.venue} · {pub.year}</span>
+              </div>
+              <p class="pub-summary">{pub.summary}</p>
+              {pub.doi && (
+                <div class="pub-links">
+                  <a href={pub.href} target="_blank" rel="noopener" class="proof-link">[DOI: {pub.doi}]</a>
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+
+        <div class="scholar-block">
+          <p class="scholar-text">
+            Additional papers on Tango Controls, device server architectures,
+            and beamline software available on
+            <a href="https://scholar.google.com/scholar?q=Igor+Khokhriakov" target="_blank" rel="noopener">Google Scholar</a>
+            and the
+            <a href="https://accelconf.web.cern.ch/" target="_blank" rel="noopener">CERN accelerator conference proceedings</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: none;
+  }
+
+  .page-intro {
+    margin-top: 1rem;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pub-item {
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pub-item:last-child {
+    border-bottom: none;
+  }
+
+  .pub-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pub-title {
+    font-family: var(--font-display);
+    font-stretch: expanded;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .pub-title:hover {
+    color: var(--trace);
+    opacity: 1;
+  }
+
+  .pub-meta {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .pub-summary {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .pub-links {
+    margin-top: 0.75rem;
+  }
+
+  .scholar-block {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .scholar-text {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+  }
+</style>

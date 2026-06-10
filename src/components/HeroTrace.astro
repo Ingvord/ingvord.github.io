@@ -1,0 +1,157 @@
+---
+// APM-style span waterfall: sequential → parallel, the P99 fix visualized
+---
+
+<div class="trace-wrap" aria-hidden="true">
+  <svg class="trace-svg" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="APM trace waterfall showing sequential queries refactored to parallel, yielding P99 −33%">
+
+    <!-- Timeline axis -->
+    <line x1="0" y1="112" x2="680" y2="112" stroke="#21262D" stroke-width="1"/>
+
+    <!-- Labels column -->
+    <text class="span-label" x="0" y="22">request</text>
+    <text class="span-label" x="0" y="46">es query 1</text>
+    <text class="span-label" x="0" y="70">es query 2</text>
+    <text class="span-label" x="0" y="94">es query 3</text>
+
+    <!-- Sequential state (initial) -->
+    <!-- Request spans full width -->
+    <rect class="span span-request seq" x="110" y="12" width="540" height="14" rx="2"/>
+
+    <!-- ES query 1: 0–180ms -->
+    <rect class="span span-seq seq" x="110" y="36" width="180" height="14" rx="2"/>
+    <!-- ES query 2: 180–360ms -->
+    <rect class="span span-seq seq" x="290" y="60" width="180" height="14" rx="2"/>
+    <!-- ES query 3: 360–540ms -->
+    <rect class="span span-seq seq" x="470" y="84" width="180" height="14" rx="2"/>
+
+    <!-- Parallel state (animated to) -->
+    <!-- Request spans only 0–200ms (P99 improvement) -->
+    <rect class="span span-request par" x="110" y="12" width="360" height="14" rx="2"/>
+
+    <!-- All three queries run in parallel: 0–180ms each -->
+    <rect class="span span-par par" x="110" y="36" width="180" height="14" rx="2"/>
+    <rect class="span span-par par" x="110" y="60" width="180" height="14" rx="2"/>
+    <rect class="span span-par par" x="110" y="84" width="180" height="14" rx="2"/>
+
+    <!-- Tick marks -->
+    <text class="tick" x="110" y="112" dy="12">0</text>
+    <text class="tick" x="290" y="112" dy="12">180ms</text>
+    <text class="tick" x="470" y="112" dy="12">360ms</text>
+    <text class="tick" x="650" y="112" dy="12">540ms</text>
+  </svg>
+
+  <p class="trace-caption">
+    <span class="metric">p99 −33%</span>
+    <span class="trace-sep">·</span>
+    <span class="trace-note">0 caller-code changes</span>
+  </p>
+</div>
+
+<style>
+  .trace-wrap {
+    margin-block: 2.5rem;
+    padding: 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .trace-svg {
+    width: 100%;
+    height: auto;
+    max-height: 130px;
+  }
+
+  .span-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--muted);
+    dominant-baseline: middle;
+  }
+
+  .tick {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--muted);
+    text-anchor: middle;
+  }
+
+  /* Sequential spans: cyan, dimmer */
+  .span-request {
+    fill: var(--trace);
+    opacity: 0.35;
+  }
+  .span-seq {
+    fill: var(--trace);
+    opacity: 0.55;
+  }
+
+  /* Parallel spans: p99 amber */
+  .span-par {
+    fill: var(--p99);
+    opacity: 0.8;
+  }
+
+  /* Animation: seq visible at start, par hidden */
+  .seq {
+    opacity: 0.55;
+  }
+  .seq.span-request {
+    opacity: 0.35;
+  }
+  .par {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .seq {
+      animation: fade-out 0.6s ease-in-out 1.2s forwards;
+    }
+    .seq.span-request {
+      animation: fade-out-dim 0.6s ease-in-out 1.2s forwards;
+    }
+    .par {
+      animation: fade-in 0.6s ease-in-out 1.2s forwards;
+    }
+    .par.span-request {
+      animation: fade-in-dim 0.6s ease-in-out 1.2s forwards;
+    }
+  }
+
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+  @keyframes fade-out-dim {
+    to { opacity: 0; }
+  }
+  @keyframes fade-in {
+    to { opacity: 0.8; }
+  }
+  @keyframes fade-in-dim {
+    to { opacity: 0.5; }
+  }
+
+  .trace-caption {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .trace-caption .metric {
+    font-size: 0.875rem;
+  }
+
+  .trace-sep {
+    color: var(--border);
+  }
+
+  .trace-note {
+    color: var(--muted);
+  }
+</style>

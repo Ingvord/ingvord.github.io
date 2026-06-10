@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  title="Writing — Igor Khokhriakov"
+  description="Notes on distributed systems, infrastructure, and engineering practice."
+>
+  <Nav />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="section-marker">Writing</p>
+        <h1>Notes</h1>
+        <p class="page-intro">
+          Selected writing on distributed systems, observability, and engineering practice.
+          Old Java/C/ZeroMQ posts remain on
+          <a href="https://ingvord.ru" target="_blank" rel="noopener">ingvord.ru</a> —
+          archived but not migrated.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <p class="empty-state mono">More notes coming soon.</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: none;
+  }
+
+  .page-intro {
+    margin-top: 1rem;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .empty-state {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0;
+  }
+</style>
