@@ -3,58 +3,148 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
-const talks = [
+const featured = [
   {
     title: 'Reactive Programming for Tango-Controls',
     venue: '40th Tango Users Meeting',
     year: 2026,
-    why: 'Composing async event streams from heterogeneous scientific instruments using RxJava — the architecture that lets operator UIs stay live without polling.',
+    why: 'Composing async event streams from heterogeneous scientific instruments — same ReactiveX operator vocabulary across Tango, EPICS, and TINE, with a shared upstream multicast layer that keeps SCADA load flat regardless of consumer count.',
     links: [
-      { label: 'slides', href: '#' },
+      { label: 'indico', href: 'https://indico.tango-controls.org/event/737/contributions/1009/' },
+      { label: 'video', href: 'https://youtu.be/9CyGPIwJlxc' },
     ],
   },
   {
-    title: 'How I Saved $200K with 0 Code in K8s',
-    venue: 'WeAreDevelopers World Congress',
-    year: 2024,
-    why: 'Infrastructure cost reduction as a platform decision — how VPA + rightsizing found the savings a migration alone had missed.',
+    title: 'Writing HDF5 in Pure Java',
+    venue: 'EHUG 2025',
+    year: 2025,
+    why: 'Zero-native-dependency HDF5 writer for scientific data pipelines: how to hit raw write throughput targets without JNI and what that means for portability in containerized environments.',
     links: [
-      { label: 'video', href: 'https://www.wearedevelopers.com/en/videos/1055/how-i-saved-200k-yr-in-direct-costs-writing-0-code-lines-in-k8s' },
+      { label: 'video', href: 'https://www.youtube.com/watch?v=a7d8sW_sxZY' },
+      { label: 'indico', href: 'https://indico.desy.de/event/48471/contributions/186087/' },
+    ],
+  },
+  {
+    title: 'SciCat Performance Assessment',
+    venue: 'ESS, Jun 2025',
+    year: 2025,
+    why: 'How to structure a performance assessment of a distributed metadata catalog: scenario design, load model, and where the ceiling actually sits before capacity planning.',
+    links: [
+      { label: 'slides', href: 'https://docs.google.com/presentation/d/1wdCdCGDX02HEsjcKXkTzb0yRZcXVVjBnEYtg_nCoBzQ/edit' },
+      { label: 'indico', href: 'https://indico.ess.eu/event/3731/' },
     ],
   },
   {
     title: 'Performance Benchmarking of Node.js, Rust, Python and Go',
     venue: 'NOBUGS 2024',
     year: 2024,
-    why: 'Methodology for reproducible cross-language benchmarks: how to eliminate toolchain bias before comparing numbers.',
+    why: 'Methodology for reproducible cross-language benchmarks: 72 scenarios across four runtimes, eliminating toolchain bias before comparing numbers across 20+ research facilities.',
     links: [
+      { label: 'slides', href: 'https://docs.google.com/presentation/d/1KjTizL4tRikbiPT81e9JCDGe16sa0eduA1ELfb-ySyw/edit' },
+      { label: 'video', href: 'https://youtu.be/IrM5LyRrsN0' },
+      { label: 'indico', href: 'https://indico.esrf.fr/event/114/contributions/777/' },
       { label: 'DOI', href: 'https://doi.org/10.5281/zenodo.15056189' },
     ],
   },
   {
-    title: 'Migrating RCSB.org to Kubernetes — Observability First',
-    venue: 'SCaLE 20x',
-    year: 2023,
-    why: 'Instrumented with Elastic APM before migrating, surfaced the sequential Elasticsearch pattern, cut P99 33% — the migration became an observability project.',
+    title: 'How I Saved $200K with 0 Code in K8s',
+    venue: 'WeAreDevelopers World Congress',
+    year: 2024,
+    why: 'Infrastructure cost reduction as a platform decision — VPA + rightsizing found savings the migration itself had missed. Zero application code changes.',
     links: [
-      { label: 'video', href: 'https://www.youtube.com/watch?v=7FTTDM0LiIk' },
+      { label: 'video', href: 'https://www.wearedevelopers.com/en/videos/1055/how-i-saved-200k-yr-in-direct-costs-writing-0-code-lines-in-k8s' },
+    ],
+  },
+  {
+    title: 'Harnessing Ubuntu and MicroK8s for Scientific Facilities',
+    venue: 'Ubuntu Summit 2023, Riga',
+    year: 2023,
+    why: 'Running production SCADA on MicroK8s: what operator UIs need from a container runtime and how to keep the facility running during a rolling upgrade.',
+    links: [
+      { label: 'video', href: 'https://youtu.be/XIGxKyekvBQ?t=5824' },
     ],
   },
   {
     title: 'Observability of SCADA Systems with Elastic APM',
-    venue: 'ElasticON / ESRF',
-    year: 2022,
-    why: 'Applying APM primitives designed for web services to low-level instrument control: distributed tracing across Tango device servers.',
+    venue: 'ICALEPCS + PyData, Hamburg',
+    year: 2023,
+    why: 'Applying distributed tracing to instrument control: how APM primitives designed for microservices translate to Tango device servers, and what you can see that logs alone cannot show.',
     links: [
-      { label: 'slides', href: 'https://www.elastic.co/videos/observability-of-scada-systems-with-elastic-apm' },
+      { label: 'paper', href: 'https://accelconf.web.cern.ch/icalepcs2023/papers/we3bco04.pdf' },
+      { label: 'slides', href: 'https://www.slideshare.net/IgorKhokhryakov/we3bco04talkpdf' },
     ],
   },
   {
-    title: 'Tango REST API — A Standard for Distributed Control',
-    venue: 'ICALEPCS',
-    year: 2019,
-    why: 'The journey from prototype to adopted industry standard across 100+ facilities, and why the boundary had to be data, not shared code.',
-    links: [],
+    title: 'Migrating RCSB.org to Kubernetes',
+    venue: 'SCaLE 20x',
+    year: 2023,
+    why: 'Instrumented with Elastic APM before migrating, surfaced sequential Elasticsearch fan-out no application metric had caught, cut P99 33% — the migration became an observability project.',
+    links: [
+      { label: 'slides', href: 'https://ingvord.github.io/scale20x/k8s.sozi.html' },
+      { label: 'video', href: 'https://www.youtube.com/watch?v=pWB1t2m6pnY' },
+    ],
+  },
+];
+
+const archive = [
+  {
+    title: 'Docker/K8s Application Developer Training (4 parts)',
+    venue: 'SDSC/RCSB',
+    year: 2023,
+    links: [
+      { label: 'part 1', href: 'https://youtu.be/FO1AqjPZ4dQ' },
+      { label: 'part 2', href: 'https://www.youtube.com/watch?v=qGtN71OJWi8' },
+      { label: 'part 3', href: 'https://www.youtube.com/watch?v=4xGwsN8tw3U' },
+      { label: 'part 4', href: 'https://www.youtube.com/watch?v=J9dN3kpvie0' },
+    ],
+  },
+  {
+    title: 'X-Environment Metadata Management',
+    venue: 'FS-SC workshop, DESY',
+    year: 2023,
+    links: [
+      { label: 'slides', href: 'https://www.slideshare.net/IgorKhokhryakov/xenvironment-metadata-management' },
+    ],
+  },
+  {
+    title: 'Docker and K8s Workshop for Java Developers',
+    venue: 'SDSC',
+    year: 2022,
+    links: [
+      { label: 'slides', href: 'https://docs.google.com/presentation/d/1vy4jtn6WFt1I9kUldzfeKDpvCNIUUt4m9IYJ1dMhFGg/edit' },
+    ],
+  },
+  {
+    title: 'Magix Integration with Tango-Controls',
+    venue: 'JetBrains Research',
+    year: 2021,
+    links: [
+      { label: 'video', href: 'https://www.youtube.com/watch?v=LO-qjWgXMWc' },
+    ],
+  },
+  {
+    title: 'Benchmarking Saga',
+    venue: 'Tango Virtual Meeting 2020',
+    year: 2020,
+    links: [
+      { label: 'video', href: 'https://www.youtube.com/watch?v=iYyEhagxB0w' },
+    ],
+  },
+  {
+    title: 'TangoWebApp Workshop',
+    venue: 'DESY FLASH',
+    year: 2018,
+    links: [
+      { label: 'video', href: 'https://www.youtube.com/watch?v=bu3uaMab9NY' },
+    ],
+  },
+  {
+    title: 'Applying Enterprise Technologies in Science',
+    venue: 'Java User Group Hamburg, DESY',
+    year: 2017,
+    links: [
+      { label: 'slides', href: 'https://www.slideshare.net/IgorKhokhryakov/applying-enterprise-technologies-in-science' },
+    ],
   },
 ];
 ---
@@ -80,7 +170,7 @@ const talks = [
     <section>
       <div class="container">
         <ol class="talks-list" reversed>
-          {talks.map((talk) => (
+          {featured.map((talk) => (
             <li class="talk-item">
               <div class="talk-header">
                 <h2 class="talk-title">{talk.title}</h2>
@@ -99,6 +189,29 @@ const talks = [
             </li>
           ))}
         </ol>
+
+        <details class="archive-details">
+          <summary class="archive-summary mono">Older talks ↓</summary>
+          <ol class="talks-list archive-list">
+            {archive.map((talk) => (
+              <li class="talk-item talk-item--archive">
+                <div class="talk-header">
+                  <h3 class="talk-title talk-title--archive">{talk.title}</h3>
+                  <span class="talk-meta mono">{talk.venue} · {talk.year}</span>
+                </div>
+                {talk.links.length > 0 && (
+                  <div class="talk-links">
+                    {talk.links.map(link => (
+                      <a href={link.href} target="_blank" rel="noopener" class="proof-link">
+                        [{link.label}]
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+        </details>
       </div>
     </section>
   </main>
@@ -133,6 +246,10 @@ const talks = [
     border-bottom: none;
   }
 
+  .talk-item--archive {
+    padding-block: 1.25rem;
+  }
+
   .talk-header {
     display: flex;
     flex-direction: column;
@@ -143,6 +260,10 @@ const talks = [
   .talk-title {
     font-size: 1.1rem;
     font-weight: 600;
+  }
+
+  .talk-title--archive {
+    font-size: 0.95rem;
   }
 
   .talk-meta {
@@ -162,5 +283,36 @@ const talks = [
     gap: 0.5rem;
     flex-wrap: wrap;
     margin-top: 0.75rem;
+  }
+
+  .archive-details {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .archive-summary {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .archive-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .archive-summary:hover {
+    color: var(--text);
+  }
+
+  details[open] .archive-summary {
+    margin-bottom: 0.5rem;
+  }
+
+  .archive-list {
+    margin-top: 0.5rem;
   }
 </style>

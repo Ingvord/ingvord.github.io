@@ -5,28 +5,73 @@ import Footer from '../../components/Footer.astro';
 
 const highlighted = [
   {
-    title: 'Performance Benchmarking of Scientific Metadata APIs: Node.js, Rust, Python, and Go',
-    venue: 'NOBUGS 2024',
-    year: 2024,
+    title: 'RCSB Protein Data Bank: Efficient Searching and Simultaneous Access to One Million Computed Structure Models Alongside the PDB Structures Enabled by Architectural Advances',
+    venue: 'Journal of Molecular Biology',
+    year: 2023,
+    doi: '10.1016/j.jmb.2023.167994',
+    href: 'https://doi.org/10.1016/j.jmb.2023.167994',
+    summary: 'Cyberinfrastructure work enabling 6× scaling of 3D biostructure data delivery across 5B requests/yr and 14.5M users. Describes the architectural changes — backwards-compatible API extensions, Elasticsearch restructuring — that made simultaneous delivery of 200K PDB structures and 1M computed models possible.',
+  },
+  {
+    title: 'Improving Observability of the SCADA Systems Using Elastic APM, Reactive Streams and Asynchronous Communication',
+    venue: 'ICALEPCS 2023',
+    year: 2023,
+    doi: null,
+    href: 'https://accelconf.web.cern.ch/icalepcs2023/papers/we3bco04.pdf',
+    summary: 'End-to-end distributed tracing across heterogeneous SCADA frameworks: how to apply APM primitives designed for web services to particle accelerator control systems. Covers reactive design principles, async event propagation, and the real-time observability gaps that traditional logging cannot close.',
+  },
+  {
+    title: 'Research Summary: SciCat metadataTypes API Endpoint Performance with Caching',
+    venue: 'Zenodo',
+    year: 2025,
     doi: '10.5281/zenodo.15056189',
     href: 'https://doi.org/10.5281/zenodo.15056189',
-    summary: '72-scenario load study showing where the SciCat metadata API ceiling sits across 20+ facilities. Includes the reusable benchmarking framework.',
+    summary: '72-scenario load study of SciCat\'s metadata API across four dataset sizes, two metadata densities, and three RPS targets. Core finding: without caching the application does not scale to facility load. Informs deployment strategy for 20+ European and US research facilities.',
+  },
+];
+
+const rest = [
+  {
+    title: 'rx-controls-suite: Reactive Programming Suite for Scientific Control Systems',
+    venue: 'Zenodo',
+    year: 2026,
+    href: 'https://doi.org/10.5281/zenodo.20614016',
   },
   {
-    title: 'Tango REST API — An HTTP Interface for the Tango Controls Framework',
-    venue: 'ICALEPCS 2019',
+    title: 'A novel solution for controlling hardware components of accelerators and beamlines',
+    venue: 'Journal of Synchrotron Radiation',
+    year: 2022,
+    href: 'https://journals.iucr.org/s/issues/2022/03/00/yn5082/index.html',
+  },
+  {
+    title: 'State of the Tango Controls Kernel Development in 2019',
+    venue: 'Proc. ICALEPCS\'19',
+    year: 2020,
+    href: 'https://doi.org/10.18429/JACoW-ICALEPCS2019-WEPHA058',
+  },
+  {
+    title: 'Waltz — A Platform for Tango Controls Web Applications',
+    venue: 'Proc. ICALEPCS\'19',
     year: 2019,
-    doi: null,
-    href: 'https://accelconf.web.cern.ch/icalepcs2019/',
-    summary: 'Specification design and adoption path for the REST interface that became the industry standard across 100+ scientific facilities.',
+    href: 'http://accelconf.web.cern.ch/icalepcs2019/papers/wesh3003.pdf',
   },
   {
-    title: 'Waltz — A Generic Web Client for Tango Controls',
+    title: 'A GUI prototype for SKA1 TM services: compliance with user-centered design approach',
+    venue: 'Proc. SPIE 10707',
+    year: 2018,
+    href: 'https://doi.org/10.1117/12.2313276',
+  },
+  {
+    title: 'Tango Heads for Industry',
     venue: 'ICALEPCS 2017',
     year: 2017,
-    doi: null,
-    href: 'https://accelconf.web.cern.ch/icalepcs2017/',
-    summary: 'Architecture of the open-source control-room web client, including the reactive data model that keeps instrument state live without polling.',
+    href: 'http://icalepcs2017.vrws.de/papers/thcpl05.pdf',
+  },
+  {
+    title: 'Tango Kernel Development Status',
+    venue: 'ICALEPCS 2017',
+    year: 2017,
+    href: 'http://icalepcs2017.vrws.de/papers/mobpl02.pdf',
   },
 ];
 ---
@@ -72,6 +117,22 @@ const highlighted = [
           ))}
         </ol>
 
+        <details class="rest-details">
+          <summary class="rest-summary mono">All publications ↓</summary>
+          <ol class="pub-list rest-list">
+            {rest.map((pub) => (
+              <li class="pub-item pub-item--rest">
+                <div class="pub-header">
+                  <a href={pub.href} target="_blank" rel="noopener" class="pub-title pub-title--rest">
+                    {pub.title}
+                  </a>
+                  <span class="pub-meta mono">{pub.venue} · {pub.year}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </details>
+
         <div class="scholar-block">
           <p class="scholar-text">
             Additional papers on Tango Controls, device server architectures,
@@ -115,6 +176,10 @@ const highlighted = [
     border-bottom: none;
   }
 
+  .pub-item--rest {
+    padding-block: 1.25rem;
+  }
+
   .pub-header {
     display: flex;
     flex-direction: column;
@@ -136,6 +201,11 @@ const highlighted = [
     opacity: 1;
   }
 
+  .pub-title--rest {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
   .pub-meta {
     font-size: 0.75rem;
     color: var(--muted);
@@ -150,6 +220,37 @@ const highlighted = [
 
   .pub-links {
     margin-top: 0.75rem;
+  }
+
+  .rest-details {
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .rest-summary {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .rest-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .rest-summary:hover {
+    color: var(--text);
+  }
+
+  details[open] .rest-summary {
+    margin-bottom: 0.5rem;
+  }
+
+  .rest-list {
+    margin-top: 0.5rem;
   }
 
   .scholar-block {
