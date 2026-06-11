@@ -139,11 +139,18 @@ const currentPath = Astro.url.pathname;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     transition: color 0.15s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
   }
 
-  .nav-link:hover,
+  .nav-link:hover {
+    color: var(--text);
+    opacity: 1;
+  }
+
   .nav-link--active {
     color: var(--trace);
+    border-bottom-color: var(--trace);
     opacity: 1;
   }
 
