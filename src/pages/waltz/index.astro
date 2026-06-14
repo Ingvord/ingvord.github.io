@@ -173,7 +173,7 @@ import Footer from '../../components/Footer.astro';
     border-bottom: 1px solid var(--border);
   }
   .cs-header h1 { margin-block: 1rem 1.25rem; max-width: 24ch; }
-  .cs-lead { max-width: 62ch; color: var(--muted); font-size: 1.05rem; margin-top: 0; }
+  .cs-lead { color: var(--muted); font-size: 1.05rem; margin-top: 0; text-align: justify; }
 
   .cs-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem; }
 
@@ -185,6 +185,7 @@ import Footer from '../../components/Footer.astro';
   .cs-section:last-of-type { border-bottom: none; }
   .cs-section h2 { margin-bottom: 1rem; }
   .cs-section h3 { margin-top: 2rem; margin-bottom: 0.5rem; color: var(--text); }
+  .cs-section p { text-align: justify; }
 
   .cs-proof { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
 
@@ -216,4 +217,5 @@ import Footer from '../../components/Footer.astro';
     color: var(--muted);
     font-size: 0.95rem;
   }
+  .cs-footer p:first-child { text-align: justify; }
 </style>
