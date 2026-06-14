@@ -1,0 +1,219 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base
+  title="Waltz — Igor Khokhriakov"
+  description="A pluggable web frontend for SCADA control systems, built in 2016 when almost no facility had one. Three artifacts outlived it: a reliable SSE event-source library, an event-bus SPA middleware, and a framework-agnostic plugin model."
+>
+  <Nav />
+  <main>
+    <article class="container case-study">
+
+      <header class="cs-header">
+        <p class="section-marker">Case study · pioneered 2016</p>
+        <h1>A web interface for control systems, before control systems had one.</h1>
+        <p class="cs-lead">
+          In 2016, almost no scientific facility ran a browser-based interface to its
+          control system; operators sat at native desktop clients wired to the hardware.
+          Waltz was among the first to put that interface in a browser, for accelerators,
+          synchrotrons, and neutron sources running Tango Controls and other middlewares.
+          Building it early meant solving problems the ecosystem had no patterns for yet,
+          and three of those solutions outlived the application itself.
+        </p>
+        <div class="cs-links">
+          <a href="https://github.com/scientific-software-hub/waltz" target="_blank" rel="noopener" class="proof-link">[source]</a>
+          <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[packages]</a>
+          <a href="https://waltz-docs.readthedocs.io/en/latest/" target="_blank" rel="noopener" class="proof-link">[docs]</a>
+          <a href="https://accelconf.web.cern.ch/icalepcs2019/papers/wesh3003.pdf" target="_blank" rel="noopener" class="proof-link">[paper: ICALEPCS 2019]</a>
+        </div>
+      </header>
+
+      <section class="cs-section">
+        <h2>What outlived the app</h2>
+        <p>
+          A web application is rarely the durable part of an engineering effort. The durable
+          parts of Waltz were the libraries underneath it, each one a solution to a problem
+          that had no off-the-shelf answer in 2016, each published and reusable independently
+          of the host application.
+        </p>
+
+        <h3>A reliable Server-Sent Events source</h3>
+        <p>
+          Control systems push a continuous stream of attribute changes; an operator UI that
+          polls for them does not scale and does not stay current. The browser's native
+          <code>EventSource</code> reconnects, but it does not recover missed events, dedupe
+          across reconnects, or multiplex many logical subscriptions over one connection.
+          The SSE event-source library solved those gaps so the rest of the application could
+          treat a live hardware stream as a dependable feed rather than a best-effort one.
+        </p>
+        <div class="cs-proof">
+          <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/eventbus]</a>
+        </div>
+
+        <h3>An event-bus SPA middleware</h3>
+        <p>
+          Rather than adopt a heavyweight framework, Waltz runs on a thin middleware built
+          around a central event-browser object: an internal bus that routes messages between
+          independently developed components. Components never call each other directly; they
+          publish and subscribe. That decoupling is what later made framework-agnostic plugins
+          possible, because a plugin only needs to speak the bus protocol, not share the host's
+          component model.
+        </p>
+        <div class="cs-proof">
+          <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/middleware]</a>
+        </div>
+
+        <h3>A framework-agnostic plugin model</h3>
+        <p>
+          Widgets register against the bus at startup and resolve at render time. Because the
+          contract is the message protocol rather than a shared component base class, widgets
+          written in different frameworks coexist in one running application: the production
+          build ships Webix widgets, CodeMirror, and Plotly side by side, and the same model
+          accommodates React or Angular widgets without changing core code. A facility adds its
+          own instrument widget without forking the platform, and that widget survives the next
+          upstream release because nothing in core imports it.
+        </p>
+        <div class="cs-proof">
+          <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/tango-rest-client]</a>
+          <a href="https://github.com/waltz-controls" target="_blank" rel="noopener" class="proof-link">[GitHub org]</a>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>The boundary contract</h2>
+        <p>
+          Underneath the plugin model sits the Tango REST API specification, written as a formal
+          document before the server code that implemented it. Any conforming server worked with
+          Waltz; any conforming client worked with any conforming server. The spec was adopted
+          across the Tango Controls community as the standard interface between web clients and
+          control systems. This is the same instinct as the <code>strategy_spec.json</code> in
+          the trading platform: when components deploy independently, the boundary is a
+          documented data contract, not shared code.
+        </p>
+        <div class="cs-proof">
+          <a href="https://github.com/tango-controls/rest-api" target="_blank" rel="noopener" class="proof-link">[Tango REST spec]</a>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>Leaving the method behind</h2>
+        <p>
+          Three workshops at DESY in 2019 brought developers from multiple facilities together to
+          build extensions collaboratively. The goal was not adoption metrics; it was making sure
+          maintainers elsewhere could diagnose and fix issues without routing everything through
+          the original author. The architecture made that possible because the libraries and the
+          plugin contract were independently documented and independently versioned.
+        </p>
+        <div class="cs-proof">
+          <a href="https://www.youtube.com/watch?v=rKnVGFP_VCA" target="_blank" rel="noopener" class="proof-link">[video: Workshop I]</a>
+          <a href="https://www.youtube.com/watch?v=npj8paRuF0Q" target="_blank" rel="noopener" class="proof-link">[video: Workshop II]</a>
+          <a href="https://www.youtube.com/watch?v=2ryBt_Cztb0" target="_blank" rel="noopener" class="proof-link">[video: Workshop III]</a>
+          <a href="https://vimeo.com/268669625" target="_blank" rel="noopener" class="proof-link">[video: UI overview 2018]</a>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>Numbers</h2>
+        <div class="cs-numbers">
+          <div class="cs-num">
+            <span class="metric cs-num-val">2016</span>
+            <span class="cs-num-label">among the first web SCADA UIs</span>
+          </div>
+          <div class="cs-num">
+            <span class="metric cs-num-val">10</span>
+            <span class="cs-num-label">years active development</span>
+          </div>
+          <div class="cs-num">
+            <span class="metric cs-num-val">50</span>
+            <span class="cs-num-label">releases</span>
+          </div>
+          <div class="cs-num">
+            <span class="metric cs-num-val">757</span>
+            <span class="cs-num-label">commits</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-section">
+        <h2>Stack</h2>
+        <p class="mono" style="color: var(--muted); font-size: 0.85rem;">
+          JavaScript · RxJS · Webix · CodeMirror · Plotly · webpack · Server-Sent Events ·
+          REST · Docker · Tomcat · Tango Controls · EPICS · TINE · DOOCS
+        </p>
+      </section>
+
+      <footer class="cs-footer">
+        <p>
+          What this demonstrates: solving infrastructure problems before the ecosystem has
+          patterns for them, and packaging the solutions so they outlast the application that
+          motivated them. The web app was the occasion; the SSE library, the event-bus
+          middleware, and the plugin contract were the lasting work.
+        </p>
+        <p style="margin-top: 1.5rem;">
+          <a href="/" class="mono">← Back to home</a>
+          <span style="margin-inline: 1rem; color: var(--border)">·</span>
+          <a href="/trading-platform/" class="mono">Trading platform case study →</a>
+        </p>
+      </footer>
+
+    </article>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .case-study { padding-block: clamp(3rem, 8vw, 5rem); }
+
+  .cs-header {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cs-header h1 { margin-block: 1rem 1.25rem; max-width: 24ch; }
+  .cs-lead { max-width: 62ch; color: var(--muted); font-size: 1.05rem; margin-top: 0; }
+
+  .cs-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem; }
+
+  .cs-section {
+    margin-bottom: 2.75rem;
+    padding-bottom: 2.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cs-section:last-of-type { border-bottom: none; }
+  .cs-section h2 { margin-bottom: 1rem; }
+  .cs-section h3 { margin-top: 2rem; margin-bottom: 0.5rem; color: var(--text); }
+
+  .cs-proof { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+
+  .cs-numbers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .cs-num { display: flex; flex-direction: column; gap: 0.25rem; }
+  .cs-num-val {
+    font-family: var(--font-display);
+    font-stretch: expanded;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 1;
+  }
+  .cs-num-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .cs-footer {
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+</style>
