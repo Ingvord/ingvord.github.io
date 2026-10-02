@@ -7,7 +7,7 @@ import Footer from '../components/Footer.astro';
 <Base title="404 — Not found · Igor Khokhriakov">
   <Nav />
 
-  <main>
+  <main id="main">
     <section class="not-found">
       <div class="container">
         <p class="code mono">404</p>
@@ -31,10 +31,36 @@ import Footer from '../components/Footer.astro';
   }
 
   .code {
-    font-size: clamp(4rem, 15vw, 8rem);
-    color: var(--border);
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-stretch: expanded;
+    font-weight: 800;
+    font-size: clamp(5rem, 22vw, 12rem);
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--trace);
+    padding-right: 0.1em;
+    filter: drop-shadow(3px 0 0 color-mix(in srgb, var(--p99) 55%, transparent))
+            drop-shadow(-3px 0 0 color-mix(in srgb, var(--trace) 35%, transparent));
     line-height: 1;
     margin: 0;
+  }
+
+  /* Scanline sweep: transform only */
+  .code::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 18%;
+    background: linear-gradient(transparent, var(--glow), transparent);
+    animation: scan 3.2s linear infinite;
+  }
+
+  @keyframes scan {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(560%); }
   }
 
   .message {

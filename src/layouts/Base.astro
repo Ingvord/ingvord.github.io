@@ -52,10 +52,73 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
         if (stored === 'light') {
           document.documentElement.setAttribute('data-theme', 'light');
         }
+        document.documentElement.classList.add('js');
       })();
     </script>
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to content</a>
     <slot />
+
+    <script>
+      const root = document.documentElement;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fine = window.matchMedia('(pointer: fine)').matches;
+
+      // Reveal on scroll, staggered by index within the parent
+      const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      targets.forEach((el) => {
+        const siblings = el.parentElement
+          ? Array.from(el.parentElement.querySelectorAll(':scope > [data-reveal]'))
+          : [];
+        el.style.setProperty('--i', String(Math.max(0, siblings.indexOf(el))));
+      });
+
+      if (reduced || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+        );
+        targets.forEach((el) => io.observe(el));
+      }
+
+      // Cursor light: page spotlight (--mx/--my) and per-card border (--sx/--sy)
+      if (fine && !reduced) {
+        let frame = 0;
+        let x = 0;
+        let y = 0;
+        let target: EventTarget | null = null;
+        window.addEventListener(
+          'pointermove',
+          (e) => {
+            x = e.clientX;
+            y = e.clientY;
+            target = e.target;
+            if (frame) return;
+            frame = requestAnimationFrame(() => {
+              frame = 0;
+              root.style.setProperty('--mx', `${x}px`);
+              root.style.setProperty('--my', `${y}px`);
+              const card = (target as HTMLElement | null)?.closest?.<HTMLElement>('.spotlight');
+              if (card) {
+                const r = card.getBoundingClientRect();
+                card.style.setProperty('--sx', `${x - r.left}px`);
+                card.style.setProperty('--sy', `${y - r.top}px`);
+              }
+            });
+          },
+          { passive: true }
+        );
+      }
+    </script>
   </body>
 </html>

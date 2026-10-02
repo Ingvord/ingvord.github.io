@@ -11,7 +11,7 @@ const currentPath = Astro.url.pathname;
 <header class="site-header">
   <div class="container header-inner">
     <a href="/" class="wordmark" aria-label="Igor Khokhriakov — home">
-      <span class="wordmark-name">Igor Khokhriakov</span>
+      <span class="wordmark-name"><span class="led" aria-hidden="true"></span>Igor Khokhriakov</span>
       <span class="wordmark-role">Staff Software Engineer</span>
     </a>
     <div class="header-right">
@@ -41,6 +41,7 @@ const currentPath = Astro.url.pathname;
       </button>
     </div>
   </div>
+  <div class="scroll-progress" aria-hidden="true"></div>
 </header>
 
 <script>
@@ -71,17 +72,57 @@ const currentPath = Astro.url.pathname;
   });
 
   syncIcon(getTheme());
+
+  // Scroll progress: CSS scroll-timeline where supported, otherwise a rAF-throttled fallback
+  if (!CSS.supports('animation-timeline: scroll()')) {
+    const bar = document.querySelector<HTMLElement>('.scroll-progress');
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const max = root.scrollHeight - root.clientHeight;
+      bar?.style.setProperty('--p', String(max > 0 ? root.scrollTop / max : 0));
+    };
+    window.addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(update); }, { passive: true });
+    update();
+  }
 </script>
 
 <style>
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: color-mix(in srgb, var(--ink) 92%, transparent);
-    backdrop-filter: blur(12px);
+    z-index: var(--z-header);
+    background: color-mix(in srgb, var(--ink) 70%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
     border-bottom: 1px solid var(--border);
+    box-shadow: inset 0 -1px 0 var(--glass-edge), 0 12px 30px -16px var(--shadow-tint);
     padding-block: 1rem;
+  }
+
+  .scroll-progress {
+    --p: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--trace), var(--p99));
+    box-shadow: 0 0 12px var(--trace);
+    transform-origin: 0 50%;
+    transform: scaleX(var(--p));
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  @keyframes progress-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
 
   .header-inner {
@@ -102,6 +143,7 @@ const currentPath = Astro.url.pathname;
     flex-direction: column;
     color: var(--text);
     text-decoration: none;
+    background-image: none;
     line-height: 1.2;
   }
 
@@ -115,6 +157,9 @@ const currentPath = Astro.url.pathname;
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
   }
 
   .wordmark-role {
@@ -141,24 +186,32 @@ const currentPath = Astro.url.pathname;
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: color 0.15s ease;
-    text-decoration: none;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    position: relative;
+    background-image: none;
+    transition: color 0.2s ease;
   }
 
   .nav-link:hover {
     color: var(--text);
-    opacity: 1;
   }
 
   .nav-link--active {
     color: var(--trace);
-    opacity: 1;
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 1px;
-    text-decoration-color: var(--trace);
+  }
+
+  .nav-link--active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -0.55rem;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--trace);
+    box-shadow: 0 0 10px var(--trace);
+    transform: translateX(-50%);
   }
 
   .theme-btn {
@@ -193,6 +246,10 @@ const currentPath = Astro.url.pathname;
   }
 
   @media (max-width: 480px) {
+    .header-inner {
+      flex-wrap: wrap;
+      gap: 0.6rem 1rem;
+    }
     .nav-list {
       gap: 1.25rem;
     }

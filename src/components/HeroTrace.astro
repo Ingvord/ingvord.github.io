@@ -1,12 +1,13 @@
 ---
-// APM-style span waterfall: sequential → parallel, the P99 fix visualized
+// APM-style span waterfall: sequential → parallel, the P99 fix visualized.
+// Plays when scrolled into view; click or tap the panel to replay.
 ---
 
-<div class="trace-wrap" aria-hidden="true">
+<div class="trace-wrap glass spotlight" id="hero-trace" aria-hidden="true">
   <svg class="trace-svg" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="APM trace waterfall showing sequential queries refactored to parallel, yielding P99 −33%">
 
     <!-- Timeline axis -->
-    <line x1="0" y1="112" x2="680" y2="112" stroke="#21262D" stroke-width="1"/>
+    <line class="axis" x1="0" y1="112" x2="680" y2="112" stroke-width="1"/>
 
     <!-- Labels column -->
     <text class="span-label" x="0" y="22">request</text>
@@ -15,24 +16,19 @@
     <text class="span-label" x="0" y="94">es query 3</text>
 
     <!-- Sequential state (initial) -->
-    <!-- Request spans full width -->
     <rect class="span span-request seq" x="110" y="12" width="540" height="14" rx="2"/>
-
-    <!-- ES query 1: 0–180ms -->
     <rect class="span span-seq seq" x="110" y="36" width="180" height="14" rx="2"/>
-    <!-- ES query 2: 180–360ms -->
     <rect class="span span-seq seq" x="290" y="60" width="180" height="14" rx="2"/>
-    <!-- ES query 3: 360–540ms -->
     <rect class="span span-seq seq" x="470" y="84" width="180" height="14" rx="2"/>
 
-    <!-- Parallel state (animated to) -->
-    <!-- Request spans only 0–200ms (P99 improvement) -->
+    <!-- Parallel state (animated to): request ends at 360ms-equivalent, all queries start together -->
     <rect class="span span-request par" x="110" y="12" width="360" height="14" rx="2"/>
-
-    <!-- All three queries run in parallel: 0–180ms each -->
     <rect class="span span-par par" x="110" y="36" width="180" height="14" rx="2"/>
     <rect class="span span-par par" x="110" y="60" width="180" height="14" rx="2"/>
     <rect class="span span-par par" x="110" y="84" width="180" height="14" rx="2"/>
+
+    <!-- Playhead sweeps the timeline before the bars rearrange -->
+    <line class="playhead" x1="110" y1="6" x2="110" y2="108" stroke-width="1.5"/>
 
     <!-- Tick marks -->
     <text class="tick" x="110" y="112" dy="12">0</text>
@@ -42,26 +38,57 @@
   </svg>
 
   <p class="trace-caption">
-    <span class="metric">p99 −33%</span>
+    <span class="metric readout">p99 −33%<span class="cursor" aria-hidden="true"></span></span>
     <span class="trace-sep">·</span>
     <span class="trace-note">0 caller-code changes</span>
+    <span class="trace-replay">click to replay</span>
   </p>
 </div>
+
+<script>
+  const wrap = document.getElementById('hero-trace');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (wrap && !reduced) {
+    const play = () => {
+      wrap.classList.remove('is-in');
+      void wrap.getBoundingClientRect(); // restart the CSS animations
+      wrap.classList.add('is-in');
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          play();
+          io.disconnect();
+        }
+      }, { threshold: 0.5 });
+      io.observe(wrap);
+    } else {
+      play();
+    }
+
+    wrap.addEventListener('click', play);
+  }
+</script>
 
 <style>
   .trace-wrap {
     margin-block: 2.5rem;
     padding: 1.5rem;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .trace-svg {
     width: 100%;
     height: auto;
     max-height: 130px;
+    overflow: visible;
+  }
+
+  .axis {
+    stroke: var(--border);
   }
 
   .span-label {
@@ -78,60 +105,64 @@
     text-anchor: middle;
   }
 
-  /* Sequential spans: cyan, dimmer */
   .span-request {
     fill: var(--trace);
-    opacity: 0.35;
   }
   .span-seq {
     fill: var(--trace);
-    opacity: 0.55;
+    filter: drop-shadow(0 0 5px var(--glow));
   }
-
-  /* Parallel spans: p99 amber */
   .span-par {
     fill: var(--p99);
-    opacity: 0.8;
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--p99) 55%, transparent));
   }
 
-  /* Animation: seq visible at start, par hidden */
-  .seq {
-    opacity: 0.55;
-  }
-  .seq.span-request {
-    opacity: 0.35;
-  }
-  .par {
+  /* Resting state: sequential visible, parallel hidden */
+  .seq { opacity: 0.55; }
+  .seq.span-request { opacity: 0.35; }
+  .par { opacity: 0; }
+
+  .playhead {
+    stroke: var(--trace);
     opacity: 0;
+    filter: drop-shadow(0 0 4px var(--trace));
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .seq {
-      animation: fade-out 0.6s ease-in-out 1.2s forwards;
-    }
-    .seq.span-request {
-      animation: fade-out-dim 0.6s ease-in-out 1.2s forwards;
-    }
-    .par {
-      animation: fade-in 0.6s ease-in-out 1.2s forwards;
-    }
-    .par.span-request {
-      animation: fade-in-dim 0.6s ease-in-out 1.2s forwards;
-    }
+  /* Playing: playhead sweeps 0 → 540ms, then the bars rearrange */
+  .trace-wrap:global(.is-in) .playhead {
+    animation: sweep 1.2s cubic-bezier(0.45, 0, 0.55, 1) both;
+  }
+  .trace-wrap:global(.is-in) .seq {
+    animation: fade-out 0.6s ease-in-out 1.2s forwards;
+  }
+  .trace-wrap:global(.is-in) .par {
+    animation: fade-in 0.6s ease-in-out 1.2s forwards;
+  }
+  .trace-wrap:global(.is-in) .par.span-request {
+    animation-name: fade-in-dim;
   }
 
-  @keyframes fade-out {
-    to { opacity: 0; }
+  /* No JS, or reduced motion: show the final (parallel) state */
+  :global(html:not(.js)) .seq { opacity: 0; }
+  :global(html:not(.js)) .par { opacity: 0.8; }
+  :global(html:not(.js)) .par.span-request { opacity: 0.5; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seq { opacity: 0 !important; animation: none !important; }
+    .par { opacity: 0.8 !important; animation: none !important; }
+    .par.span-request { opacity: 0.5 !important; }
+    .playhead { display: none; }
   }
-  @keyframes fade-out-dim {
-    to { opacity: 0; }
+
+  @keyframes sweep {
+    0%   { transform: translateX(0); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translateX(540px); opacity: 0; }
   }
-  @keyframes fade-in {
-    to { opacity: 0.8; }
-  }
-  @keyframes fade-in-dim {
-    to { opacity: 0.5; }
-  }
+  @keyframes fade-out { to { opacity: 0; } }
+  @keyframes fade-in { to { opacity: 0.8; } }
+  @keyframes fade-in-dim { to { opacity: 0.5; } }
 
   .trace-caption {
     margin-top: 1rem;
@@ -141,10 +172,27 @@
     display: flex;
     gap: 0.75rem;
     align-items: center;
+    flex-wrap: wrap;
   }
 
-  .trace-caption .metric {
-    font-size: 0.875rem;
+  .readout {
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.5ch;
+    height: 1em;
+    margin-left: 0.3ch;
+    vertical-align: -0.12em;
+    background: var(--p99);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
   }
 
   .trace-sep {
@@ -153,5 +201,12 @@
 
   .trace-note {
     color: var(--muted);
+  }
+
+  .trace-replay {
+    margin-left: auto;
+    font-size: 0.68rem;
+    color: var(--muted);
+    opacity: 0.6;
   }
 </style>

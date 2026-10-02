@@ -155,7 +155,7 @@ const archive = [
 >
   <Nav />
 
-  <main>
+  <main id="main">
     <section class="page-hero">
       <div class="container">
         <p class="section-marker">Talks</p>
@@ -171,7 +171,7 @@ const archive = [
       <div class="container">
         <ol class="talks-list" reversed>
           {featured.map((talk) => (
-            <li class="talk-item">
+            <li class="talk-item" data-reveal>
               <div class="talk-header">
                 <h2 class="talk-title">{talk.title}</h2>
                 <span class="talk-meta mono">{talk.venue} · {talk.year}</span>

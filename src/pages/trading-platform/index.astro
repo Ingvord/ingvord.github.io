@@ -10,7 +10,7 @@ import Footer from '../../components/Footer.astro';
 >
   <Nav />
 
-  <main>
+  <main id="main">
     <section class="page-hero">
       <div class="container">
         <p class="section-marker">Case Study</p>
@@ -25,7 +25,7 @@ import Footer from '../../components/Footer.astro';
       <div class="container">
 
         <!-- Pipeline diagram -->
-        <div class="diagram-wrap">
+        <div class="diagram-wrap glass" data-reveal>
           <svg class="pipeline-svg" viewBox="0 0 660 100" xmlns="http://www.w3.org/2000/svg" aria-label="Pipeline: Telegram command → Step Functions → Designer → Selector → Researcher → Deployer → Live Lambda + Telegram report">
             <!-- Nodes -->
             <rect class="node node-input" x="0" y="30" width="80" height="40" rx="4"/>
@@ -69,7 +69,7 @@ import Footer from '../../components/Footer.astro';
           </svg>
         </div>
 
-        <section class="cs-section">
+        <section class="cs-section" data-reveal>
           <h2>The problem</h2>
           <p>
             The lifecycle of a new trading strategy used to look like this: write the idea
@@ -87,7 +87,7 @@ import Footer from '../../components/Footer.astro';
           </p>
         </section>
 
-        <section class="cs-section">
+        <section class="cs-section" data-reveal>
           <h2>What it does now</h2>
           <p>One Telegram command:</p>
           <pre><code>/pipeline "fast ema crosses slow ema" 5</code></pre>
@@ -120,7 +120,7 @@ import Footer from '../../components/Footer.astro';
           </p>
         </section>
 
-        <section class="cs-section">
+        <section class="cs-section" data-reveal>
           <h2>The decisions worth writing down</h2>
 
           <h3>Strategy-as-spec</h3>
@@ -162,7 +162,7 @@ import Footer from '../../components/Footer.astro';
           </p>
         </section>
 
-        <section class="cs-section">
+        <section class="cs-section" data-reveal>
           <h2>Status and numbers</h2>
           <p class="status-line mono">
             Live on AWS (eu-central-1) · testnet grace period · mainnet: one env var away
@@ -175,7 +175,7 @@ import Footer from '../../components/Footer.astro';
           </ul>
         </section>
 
-        <section class="cs-section">
+        <section class="cs-section" data-reveal>
           <h2>Stack</h2>
           <p class="stack-list mono">
             Python 3.12 agents (Claude via Bedrock) · AWS Step Functions · ECS Fargate ·
@@ -184,7 +184,7 @@ import Footer from '../../components/Footer.astro';
           </p>
         </section>
 
-        <section class="cs-section cs-framing">
+        <section class="cs-section cs-framing" data-reveal>
           <p>
             What this demonstrates, in the framing of the rest of this site:
             <em>build the platform that makes the next thing possible</em>
@@ -221,9 +221,6 @@ import Footer from '../../components/Footer.astro';
   .diagram-wrap {
     margin-block: 2rem;
     padding: 1.5rem;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
     overflow-x: auto;
   }
 
@@ -259,12 +256,22 @@ import Footer from '../../components/Footer.astro';
   }
 
   .arrow {
-    stroke: var(--muted);
+    stroke: var(--trace);
     stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    animation: flow 1.2s linear infinite;
+  }
+
+  @keyframes flow {
+    to { stroke-dashoffset: -8; }
   }
 
   .arrowhead {
-    fill: var(--muted);
+    fill: var(--trace);
+  }
+
+  .node {
+    filter: drop-shadow(0 0 6px var(--glow));
   }
 
   .legend-label {

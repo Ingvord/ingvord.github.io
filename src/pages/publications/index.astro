@@ -82,7 +82,7 @@ const rest = [
 >
   <Nav />
 
-  <main>
+  <main id="main">
     <section class="page-hero">
       <div class="container">
         <p class="section-marker">Publications</p>
@@ -100,7 +100,7 @@ const rest = [
       <div class="container">
         <ol class="pub-list">
           {highlighted.map((pub) => (
-            <li class="pub-item">
+            <li class="pub-item" data-reveal>
               <div class="pub-header">
                 <a href={pub.href} target="_blank" rel="noopener" class="pub-title">
                   {pub.title}

@@ -9,7 +9,7 @@ import Footer from '../../components/Footer.astro';
   description="A pluggable web frontend for SCADA control systems, built in 2016 when almost no facility had one. Three artifacts outlived it: a reliable SSE event-source library, an event-bus SPA middleware, and a framework-agnostic plugin model."
 >
   <Nav />
-  <main>
+  <main id="main">
     <article class="container case-study">
 
       <header class="cs-header">
@@ -31,7 +31,7 @@ import Footer from '../../components/Footer.astro';
         </div>
       </header>
 
-      <section class="cs-section">
+      <section class="cs-section" data-reveal>
         <h2>What outlived the app</h2>
         <p>
           A web application is rarely the durable part of an engineering effort. The durable
@@ -82,7 +82,7 @@ import Footer from '../../components/Footer.astro';
         </div>
       </section>
 
-      <section class="cs-section">
+      <section class="cs-section" data-reveal>
         <h2>The boundary contract</h2>
         <p>
           Underneath the plugin model sits the Tango REST API specification, written as a formal
@@ -98,7 +98,7 @@ import Footer from '../../components/Footer.astro';
         </div>
       </section>
 
-      <section class="cs-section">
+      <section class="cs-section" data-reveal>
         <h2>Leaving the method behind</h2>
         <p>
           Three workshops at DESY in 2019 brought developers from multiple facilities together to
@@ -115,7 +115,7 @@ import Footer from '../../components/Footer.astro';
         </div>
       </section>
 
-      <section class="cs-section">
+      <section class="cs-section" data-reveal>
         <h2>Numbers</h2>
         <div class="cs-numbers">
           <div class="cs-num">
@@ -137,7 +137,7 @@ import Footer from '../../components/Footer.astro';
         </div>
       </section>
 
-      <section class="cs-section">
+      <section class="cs-section" data-reveal>
         <h2>Stack</h2>
         <p class="mono" style="color: var(--muted); font-size: 0.85rem;">
           JavaScript · RxJS · Webix · CodeMirror · Plotly · webpack · Server-Sent Events ·
