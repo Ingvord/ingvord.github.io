@@ -47,7 +47,7 @@ import Footer from '../../components/Footer.astro';
           <code>EventSource</code> reconnects, but it does not recover missed events, dedupe
           across reconnects, or multiplex many logical subscriptions over one connection.
           The SSE event-source library solved those gaps so the rest of the application could
-          treat a live hardware stream as a dependable feed rather than a best-effort one.
+          treat a live hardware stream as a dependable feed.
         </p>
         <div class="cs-proof">
           <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/eventbus]</a>
@@ -55,7 +55,7 @@ import Footer from '../../components/Footer.astro';
 
         <h3>An event-bus SPA middleware</h3>
         <p>
-          Rather than adopt a heavyweight framework, Waltz runs on a thin middleware built
+          Waltz runs on a thin middleware built
           around a central event-browser object: an internal bus that routes messages between
           independently developed components. Components never call each other directly; they
           publish and subscribe. That decoupling is what later made framework-agnostic plugins
@@ -69,7 +69,7 @@ import Footer from '../../components/Footer.astro';
         <h3>A framework-agnostic plugin model</h3>
         <p>
           Widgets register against the bus at startup and resolve at render time. Because the
-          contract is the message protocol rather than a shared component base class, widgets
+          contract is the message protocol, widgets
           written in different frameworks coexist in one running application: the production
           build ships Webix widgets, CodeMirror, and Plotly side by side, and the same model
           accommodates React or Angular widgets without changing core code. A facility adds its
@@ -102,9 +102,8 @@ import Footer from '../../components/Footer.astro';
         <h2>Leaving the method behind</h2>
         <p>
           Three workshops at DESY in 2019 brought developers from multiple facilities together to
-          build extensions collaboratively. The goal was not adoption metrics; it was making sure
-          maintainers elsewhere could diagnose and fix issues without routing everything through
-          the original author. The architecture made that possible because the libraries and the
+          build extensions collaboratively. The goal was for maintainers elsewhere to diagnose and
+          fix issues independently of the original author. The architecture made that possible because the libraries and the
           plugin contract were independently documented and independently versioned.
         </p>
         <div class="cs-proof">
