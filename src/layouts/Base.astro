@@ -57,6 +57,7 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
     </script>
   </head>
   <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
     <a href="#main" class="skip-link">Skip to content</a>
     <slot />
 
@@ -91,8 +92,9 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
         targets.forEach((el) => io.observe(el));
       }
 
-      // Cursor light: page spotlight (--mx/--my) and per-card border (--sx/--sy)
-      if (fine && !reduced) {
+      // Cursor light: glow layer follows the pointer (--sx/--sy lights the hovered card border)
+      const glow = document.querySelector<HTMLElement>('.cursor-glow');
+      if (glow && fine && !reduced) {
         let frame = 0;
         let x = 0;
         let y = 0;
@@ -103,14 +105,14 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
             x = e.clientX;
             y = e.clientY;
             target = e.target;
-            if (frame) return;
+            if (frame || document.hidden) return;
             frame = requestAnimationFrame(() => {
               frame = 0;
-              root.style.setProperty('--mx', `${x}px`);
-              root.style.setProperty('--my', `${y}px`);
               const card = (target as HTMLElement | null)?.closest?.<HTMLElement>('.spotlight');
-              if (card) {
-                const r = card.getBoundingClientRect();
+              const r = card?.getBoundingClientRect();
+              glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+              glow.classList.add('is-on');
+              if (card && r) {
                 card.style.setProperty('--sx', `${x - r.left}px`);
                 card.style.setProperty('--sy', `${y - r.top}px`);
               }

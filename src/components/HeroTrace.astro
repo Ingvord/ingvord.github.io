@@ -50,6 +50,7 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (wrap && !reduced) {
+    wrap.classList.add('is-armed');
     const play = () => {
       wrap.classList.remove('is-in');
       void wrap.getBoundingClientRect(); // restart the CSS animations
@@ -117,10 +118,10 @@
     filter: drop-shadow(0 0 6px color-mix(in srgb, var(--p99) 55%, transparent));
   }
 
-  /* Resting state: sequential visible, parallel hidden */
-  .seq { opacity: 0.55; }
-  .seq.span-request { opacity: 0.35; }
-  .par { opacity: 0; }
+  /* Default (no JS, reduced motion): the final, parallel state */
+  .seq { opacity: 0; }
+  .par { opacity: 0.8; }
+  .par.span-request { opacity: 0.5; }
 
   .playhead {
     stroke: var(--trace);
@@ -128,30 +129,23 @@
     filter: drop-shadow(0 0 4px var(--trace));
   }
 
+  /* Armed: start sequential, play when scrolled into view */
+  .trace-wrap:global(.is-armed) .seq { opacity: 0.55; }
+  .trace-wrap:global(.is-armed) .seq.span-request { opacity: 0.35; }
+  .trace-wrap:global(.is-armed) .par { opacity: 0; }
+
   /* Playing: playhead sweeps 0 → 540ms, then the bars rearrange */
-  .trace-wrap:global(.is-in) .playhead {
+  .trace-wrap:global(.is-armed.is-in) .playhead {
     animation: sweep 1.2s cubic-bezier(0.45, 0, 0.55, 1) both;
   }
-  .trace-wrap:global(.is-in) .seq {
+  .trace-wrap:global(.is-armed.is-in) .seq {
     animation: fade-out 0.6s ease-in-out 1.2s forwards;
   }
-  .trace-wrap:global(.is-in) .par {
+  .trace-wrap:global(.is-armed.is-in) .par {
     animation: fade-in 0.6s ease-in-out 1.2s forwards;
   }
-  .trace-wrap:global(.is-in) .par.span-request {
+  .trace-wrap:global(.is-armed.is-in) .par.span-request {
     animation-name: fade-in-dim;
-  }
-
-  /* No JS, or reduced motion: show the final (parallel) state */
-  :global(html:not(.js)) .seq { opacity: 0; }
-  :global(html:not(.js)) .par { opacity: 0.8; }
-  :global(html:not(.js)) .par.span-request { opacity: 0.5; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .seq { opacity: 0 !important; animation: none !important; }
-    .par { opacity: 0.8 !important; animation: none !important; }
-    .par.span-request { opacity: 0.5 !important; }
-    .playhead { display: none; }
   }
 
   @keyframes sweep {
@@ -197,10 +191,6 @@
 
   .trace-sep {
     color: var(--border);
-  }
-
-  .trace-note {
-    color: var(--muted);
   }
 
   .trace-replay {

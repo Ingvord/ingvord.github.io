@@ -277,7 +277,6 @@ import HeroTrace from '../components/HeroTrace.astro';
     padding: 0.75em 1.35em;
     border-radius: 6px;
     border: 1px solid transparent;
-    background-image: none;
     cursor: pointer;
     transition: transform 0.2s var(--ease-spring), box-shadow 0.3s ease,
                 color 0.2s ease, border-color 0.2s ease;
@@ -363,7 +362,7 @@ import HeroTrace from '../components/HeroTrace.astro';
     line-height: 0.9;
     letter-spacing: -0.04em;
     -webkit-text-stroke-color: var(--trace);
-    background-image: linear-gradient(90deg, var(--trace), var(--trace));
+    --outline-from: var(--trace);
   }
 
   .work-number {
