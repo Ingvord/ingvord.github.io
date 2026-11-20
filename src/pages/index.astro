@@ -6,8 +6,8 @@ import HeroTrace from '../components/HeroTrace.astro';
 ---
 
 <Base
-  title="Igor Khokhriakov — Staff Software Engineer"
-  description="Staff Software Engineer specializing in Java/JVM, distributed systems, Kubernetes, and Elasticsearch. 17 years finding and removing the blockers that slow down the next phase of work."
+  title="Igor Khokhriakov — Product-minded Staff Engineer"
+  description="Product-minded Staff Engineer. I turn complex problems into products people use: 17 years across distributed systems, developer platforms, and full-stack engineering."
 >
   <Nav />
 
@@ -17,70 +17,91 @@ import HeroTrace from '../components/HeroTrace.astro';
       <div class="container">
         <p class="hero-eyebrow glass mono" data-reveal>
           <span class="led" aria-hidden="true"></span>
-          Java / JVM · Distributed Systems · Kubernetes · Elasticsearch
+          Product-minded Staff Engineer
         </p>
 
         <h1 id="hero-headline" data-reveal>
-          <span class="outline">Distributed systems</span><br />don't fail loudly.
+          I turn <span class="outline">complex problems</span><br />into products people use.
         </h1>
 
         <p class="hero-prose" data-reveal>
-          They degrade quietly, accumulate debt silently, and block the next phase of work
-          long before anyone names the blocker. I've spent 17 years finding those blockers
-          and removing them.
+          I start from the workflow, question the assumptions, then build, ship, and operate
+          the software. 17 years across distributed systems, developer platforms, and
+          full-stack engineering.
         </p>
 
         <HeroTrace />
 
         <div class="hero-cta" data-reveal>
-          <a href="#proof" class="btn btn-primary">Read the proof ↓</a>
+          <a href="#work" class="btn btn-primary">Explore my work ↓</a>
           <a href="mailto:ingvord.mail@gmail.com" class="btn btn-secondary">
-            Message me — I respond to everything <span class="btn-arrow" aria-hidden="true">→</span>
+            Get in touch <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ─── THE WORK TAKES THREE FORMS ─── -->
-    <section id="proof" aria-labelledby="work-heading">
+    <!-- ─── SELECTED WORK ─── -->
+    <section id="work" aria-labelledby="work-heading">
       <div class="container">
-        <p class="section-marker">The work takes three forms</p>
+        <p class="section-marker">Selected work</p>
+        <h2 id="work-heading" class="sr-only">Selected work</h2>
 
-        <!-- 1 · Build -->
+        <!-- 1 · Waltz -->
         <div class="work-block glass spotlight" data-reveal>
           <span class="work-index outline" aria-hidden="true">01</span>
-          <h2 class="work-number" id="work-heading">
-            Build the platform that makes the next thing possible
-          </h2>
-
+          <h3 class="work-number">
+            Waltz: scientific control systems in the browser
+          </h3>
           <div class="work-body">
+            <p class="work-kicker mono">User-facing platform</p>
             <p>
-              RCSB Protein Data Bank (<span class="metric">5B requests/yr</span>,
-              <span class="metric">14.5M users</span>): integrated Elastic APM,
-              surfaced sequential Elasticsearch execution no application metric had caught,
-              cut P99 latency <span class="metric">33%</span> with zero caller-code changes.
+              Operators and beamline scientists worked through desktop clients wired to the
+              hardware. Waltz turned instrument-control workflows into extensible browser
+              software that facility teams grow with their own components, adopted across
+              facilities running Tango Controls, with <span class="metric">10</span> years of
+              active development and <span class="metric">50</span> releases.
             </p>
             <p class="proof-row">
-              <a href="https://www.youtube.com/watch?v=pWB1t2m6pnY" target="_blank" rel="noopener" class="proof-link">[video: SCaLE 20x — RCSB → K8s]</a>
+              <a href="/waltz/" class="proof-link">[case study]</a>
+              <a href="https://github.com/scientific-software-hub/waltz" target="_blank" rel="noopener" class="proof-link">[GitHub: waltz]</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- 2 · RCSB -->
+        <div class="work-block glass spotlight" data-reveal>
+          <span class="work-index outline" aria-hidden="true">02</span>
+          <h3 class="work-number">
+            RCSB PDB: <span class="metric">33%</span> lower p99 latency
+          </h3>
+          <div class="work-body">
+            <p class="work-kicker mono">Product performance</p>
+            <p>
+              The RCSB Protein Data Bank serves <span class="metric">14.5M users</span> and
+              <span class="metric">5B requests/yr</span>. Elastic APM exposed sequential
+              Elasticsearch execution that no application metric had caught. Parallelizing it
+              cut p99 latency with zero caller-code changes.
+            </p>
+            <p class="proof-row">
+              <a href="https://www.youtube.com/watch?v=pWB1t2m6pnY" target="_blank" rel="noopener" class="proof-link">[video: SCaLE 20x, RCSB → K8s]</a>
               <a href="https://www.slideshare.net/slideshow/we3bco04talkpdf/263549945" target="_blank" rel="noopener" class="proof-link">[slides: Observability with Elastic APM]</a>
             </p>
+          </div>
+        </div>
 
+        <!-- 3 · Trading -->
+        <div class="work-block glass spotlight" data-reveal>
+          <span class="work-index outline" aria-hidden="true">03</span>
+          <h3 class="work-number">
+            Trading automation: from idea to deployed strategy
+          </h3>
+          <div class="work-body">
+            <p class="work-kicker mono">Zero-to-one</p>
             <p>
-              DESY: ISPyB refactor that let the beamline team bring one of the facility's most
-              commercially significant beamlines live.
-            </p>
-
-            <p>
-              OpenStack → Kubernetes migration:
-              <span class="metric">$200K</span> direct savings.
-            </p>
-            <p class="proof-row">
-              <a href="https://www.wearedevelopers.com/en/videos/1055/how-i-saved-200k-yr-in-direct-costs-writing-0-code-lines-in-k8s" target="_blank" rel="noopener" class="proof-link">[video: WeAreDevelopers World Congress 2024]</a>
-            </p>
-
-            <p>
-              Now building: a fully automated trading-strategy platform: concept to live
-              production, every handoff automated.
+              A single command takes a strategy idea through design, evaluation, and
+              deployment. LLM agents handle the judgment stages, deterministic code handles
+              screening and optimisation, and no manual handoffs remain between them.
             </p>
             <p class="proof-row">
               <a href="/trading-platform/" class="proof-link">[case study]</a>
@@ -88,78 +109,63 @@ import HeroTrace from '../components/HeroTrace.astro';
           </div>
         </div>
 
-        <!-- 2 · Evidence -->
-        <div class="work-block glass spotlight" data-reveal>
-          <span class="work-index outline" aria-hidden="true">02</span>
-          <h2 class="work-number">
-            Generate the evidence that prevents the wrong thing from being built
-          </h2>
-
-          <div class="work-body">
-            <p>
-              Code-level assessment of a distributed storage engine: modeled
-              <span class="metric">5×–10×</span> growth, located where metadata coordination,
-              request fan-out, and object-storage latency combine into production constraints —
-              before any appeared.
-            </p>
-
-            <p>
-              <span class="metric">72-scenario</span> load study of SciCat's metadata API;
-              showed <span class="metric">20+</span> European and US facilities where their
+        <!-- Also -->
+        <div class="also" data-reveal>
+          <h3 class="also-heading mono">Also</h3>
+          <ul class="also-list">
+            <li>
+              OpenStack → Kubernetes migration at RCSB: <span class="metric">$200K</span>
+              direct savings.
+              <a href="https://www.wearedevelopers.com/en/videos/1055/how-i-saved-200k-yr-in-direct-costs-writing-0-code-lines-in-k8s" target="_blank" rel="noopener" class="proof-link">[video]</a>
+            </li>
+            <li>
+              DESY: ISPyB refactor that let the beamline team bring one of the facility's most
+              commercially significant beamlines live.
+            </li>
+            <li>
+              Tango REST specification: industry standard across <span class="metric">100+</span>
+              facilities.
+              <a href="https://github.com/tango-controls/rest-api" target="_blank" rel="noopener" class="proof-link">[spec]</a>
+            </li>
+            <li>
+              <span class="metric">72-scenario</span> load study of SciCat's metadata API,
+              showing <span class="metric">20+</span> European and US facilities where their
               scaling ceiling sits.
-            </p>
-            <p class="proof-row">
-              <a href="https://indico.esrf.fr/event/114/contributions/777/" target="_blank" rel="noopener" class="proof-link">[paper: NOBUGS 2024]</a>
-              <a href="https://doi.org/10.5281/zenodo.15056189" target="_blank" rel="noopener" class="proof-link">[DOI: 10.5281/zenodo.15056189]</a>
-            </p>
-          </div>
-        </div>
-
-        <!-- 3 · Method -->
-        <div class="work-block glass spotlight" data-reveal>
-          <span class="work-index outline" aria-hidden="true">03</span>
-          <h2 class="work-number">
-            Extract the method and leave it behind
-          </h2>
-
-          <div class="work-body">
-            <p>
-              Tango REST specification → industry standard across
-              <span class="metric">100+</span> facilities.
-            </p>
-
-            <p>
-              Published, reusable benchmarking framework and load-testing methodology.
-            </p>
-            <p class="proof-row">
-              <a href="/waltz/" class="proof-link">[case study]</a>
-              <a href="https://zenodo.org/search?q=khokhriakov" target="_blank" rel="noopener" class="proof-link">[Zenodo records]</a>
-              <a href="https://github.com/scientific-software-hub/waltz" target="_blank" rel="noopener" class="proof-link">[GitHub: waltz]</a>
-            </p>
-          </div>
+              <a href="https://doi.org/10.5281/zenodo.15056189" target="_blank" rel="noopener" class="proof-link">[DOI]</a>
+            </li>
+            <li>
+              Code-level assessment of a distributed storage engine: modeled
+              <span class="metric">5×–10×</span> growth and located the production constraints
+              before any appeared.
+            </li>
+            <li>
+              Papers and records:
+              <a href="/publications/" class="proof-link">[publications]</a>
+              <a href="https://zenodo.org/search?q=khokhriakov" target="_blank" rel="noopener" class="proof-link">[Zenodo]</a>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- ─── STILL SHIPPING ─── -->
+    <!-- ─── TOOLS ─── -->
     <section aria-labelledby="shipping-heading">
       <div class="container">
-        <p class="section-marker">Still shipping</p>
+        <p class="section-marker">Tools I ship with</p>
         <p id="shipping-heading" class="shipping-statement">
-          Production Java is where I'm sharpest — including low-level
-          <code>Unsafe</code>-based work — and I intend to keep shipping it.
+          Technology serves the outcome. Production Java is where I'm sharpest, including
+          low-level <code>Unsafe</code>-based work, and I keep shipping it.
         </p>
         <ul class="stack-pills mono" aria-label="Production stack">
           <li>Java/JVM</li>
           <li>Node/TypeScript</li>
+          <li>Python</li>
           <li>Rust</li>
           <li>C++</li>
           <li>ELK</li>
           <li>Kubernetes</li>
+          <li>AWS</li>
         </ul>
-        <p class="stack-note">
-          Python for tooling and analysis, not production.
-        </p>
       </div>
     </section>
 
@@ -205,16 +211,6 @@ import HeroTrace from '../components/HeroTrace.astro';
             </div>
           </li>
 
-          <li class="talk-row" data-reveal>
-            <div class="talk-main">
-              <span class="talk-title">Migrating RCSB.org to Kubernetes</span>
-              <span class="talk-meta mono">SCaLE 20x · 2023</span>
-            </div>
-            <p class="talk-why">How a migration becomes an observability project when you instrument first.</p>
-            <div class="talk-links">
-              <a href="https://www.youtube.com/watch?v=pWB1t2m6pnY" target="_blank" rel="noopener" class="proof-link">[video]</a>
-            </div>
-          </li>
         </ol>
 
         <p class="talks-more">
@@ -367,7 +363,59 @@ import HeroTrace from '../components/HeroTrace.astro';
 
   .work-number {
     grid-column: 2;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.4rem, 3vw, 1.953rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .work-kicker {
+    margin: 0 0 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--trace);
+  }
+
+  .also {
+    margin-top: 3rem;
+  }
+
+  .also-heading {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .also-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .also-list li {
+    margin: 0;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .also-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--trace);
+    opacity: 0.7;
   }
 
   .work-body {
@@ -385,7 +433,7 @@ import HeroTrace from '../components/HeroTrace.astro';
     margin-top: 0.5rem !important;
   }
 
-  /* ── Still shipping ── */
+  /* ── Tools ── */
   .shipping-statement {
     font-size: 1.05rem;
     margin: 0;
@@ -419,12 +467,6 @@ import HeroTrace from '../components/HeroTrace.astro';
   .shipping-statement code {
     color: var(--p99);
     text-shadow: 0 0 12px color-mix(in srgb, var(--p99) 50%, transparent);
-  }
-
-  .stack-note {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--muted);
   }
 
   /* ── Talks ── */

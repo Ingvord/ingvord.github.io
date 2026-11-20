@@ -1,18 +1,20 @@
 ---
 const navLinks = [
-  { href: '/talks/', label: 'Talks' },
-  { href: '/publications/', label: 'Publications' },
-  { href: '/trading-platform/', label: 'Case Study' },
+  { href: '/#work', label: 'Work', match: ['/', '/waltz/', '/trading-platform/'] },
+  { href: '/writing/', label: 'Writing', match: ['/writing/'] },
+  { href: '/talks/', label: 'Talks', match: ['/talks/', '/publications/'] },
 ];
 
 const currentPath = Astro.url.pathname;
+const isActive = (match: string[]) =>
+  match.some(m => (m === '/' ? currentPath === '/' : currentPath.startsWith(m)));
 ---
 
 <header class="site-header">
   <div class="container header-inner">
     <a href="/" class="wordmark" aria-label="Igor Khokhriakov — home">
       <span class="wordmark-name"><span class="led" aria-hidden="true"></span>Igor Khokhriakov</span>
-      <span class="wordmark-role">Staff Software Engineer</span>
+      <span class="wordmark-role">Product-minded Staff Engineer</span>
     </a>
     <div class="header-right">
       <nav aria-label="Primary navigation">
@@ -21,7 +23,7 @@ const currentPath = Astro.url.pathname;
             <li>
               <a
                 href={link.href}
-                class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
+                class:list={['nav-link', { 'nav-link--active': isActive(link.match) }]}
               >
                 {link.label}
               </a>
