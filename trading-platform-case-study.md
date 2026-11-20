@@ -3,7 +3,7 @@
 *Case study: an autonomous multi-agent pipeline that takes a trading strategy
 from natural language to a deployed AWS Lambda bot, unattended.*
 
-`status: live on AWS (eu-central-1) · testnet grace period, mainnet one env var away · ~$2.50/month total infra cost`
+`status: live on AWS (eu-central-1) · running on testnet · ~$2.50/month total infra cost`
 
 ---
 
@@ -103,10 +103,12 @@ lesson instead of the bug.
 
 New bots deploy to Bybit testnet first. That isn't a limitation; it's the
 promotion path. A freshly generated strategy trades through a grace period on
-testnet, and once it proves profit, switching to mainnet is a single
-environment variable. No redeploy, no code change: promotion is configuration,
-and the human decision happens on the human's schedule, not inside a pipeline
-timeout.
+testnet. Moving to real funds is a deliberate human decision, taken once
+testnet results show profit, and `/pause` and `/kill` stop any bot at any time.
+The switch itself is configuration, so it needs no redeploy; the decision
+happens on the human's schedule, not inside a pipeline timeout. Automatic
+promotion criteria (drawdown versus backtest baseline) are designed but not yet
+built.
 
 The same evidence-gated thinking applies to the runtime. The production Lambda
 is Python today: cold starts are irrelevant at 5-minute tick intervals and a
@@ -131,9 +133,8 @@ Optuna · Telegram Bot API · Java 21 / GraalVM (reference production bot)
 
 ---
 
-*What this demonstrates, in the framing of the rest of this site: build the
-platform that makes the next thing possible (idea to live bot, one command),
-generate evidence before committing (screen, then optimise, then promote:
-testnet to mainnet, Python to Java, each gate opened by proof), and leave the
-method behind (strategy-as-spec, the bug catalog, notify-don't-block as an
-operational pattern). The system is small. The discipline is the product.*
+*What this demonstrates: taking a problem from a one-line idea to a running,
+observable product by myself. Design, evaluation, deployment, and operations run
+as one pipeline. Each stage hands the next one a documented contract, and
+testnet results gate any move to real funds. The system is small. The discipline
+is the product.*
