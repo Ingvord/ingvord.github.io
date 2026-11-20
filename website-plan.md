@@ -33,15 +33,14 @@ respects `prefers-reduced-motion`, visible keyboard focus, OG/meta tags per page
 ```
 /                  Home (the argument — 90% of the value)
 /talks/            Curated talks, each with one-line context
-/writing/          Notes archive (migrated selectively from ingvord.ru)
+/waltz/            Product case study
 /trading-platform/ Case study (written for systematic trading firms)
-/publications/     One page: 3 highlighted papers + link to Google Scholar
+/publications/     3 highlighted papers + full list, linked to the Google Scholar profile
 404                One-liner in the site's voice + link home
 ```
 
-No blog commitment, no "Uncategorized", no bitcoin page.
-Old Java/C/ZeroMQ notes migrate only if individually still accurate; otherwise they stay
-on ingvord.ru as the archive.
+No blog, no "Uncategorized", no bitcoin page. There is no /writing/ page: publications
+carry the written record.
 
 ---
 
