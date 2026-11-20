@@ -1,8 +1,13 @@
 # ingvord.dev — Site Plan
 
-Personal site for Igor Khokhriakov, Staff Software Engineer.
-Single job of the site: convert a recruiter or hiring manager who arrives from LinkedIn
-into a message, by proving the headline claims with public artifacts within 60 seconds.
+Personal site for Igor Khokhriakov, product-minded Staff Engineer.
+Single job of the site: convert a hiring manager at a small international product company
+who arrives from LinkedIn into a message, by proving end-to-end product ownership with
+public artifacts within 60 seconds. (Repositioned from infrastructure-focused Staff roles;
+see the case-study standard below.)
+
+Case-study standard for every project page: Problem, Discovery, Decisions, What I shipped,
+Outcome and learning. User value comes first, technical depth follows.
 
 ---
 
@@ -45,22 +50,24 @@ on ingvord.ru as the archive.
 ### Hero
 
 > **Igor Khokhriakov**
-> Staff Software Engineer · Java / JVM · Distributed Systems · Kubernetes · Elasticsearch
+> Product-minded Staff Engineer
 >
-> # Distributed systems don't fail loudly.
+> # I turn complex problems into products people use.
 >
-> They degrade quietly, accumulate debt silently, and block the next phase of work
-> long before anyone names the blocker. I've spent 17 years finding those blockers
-> and removing them.
+> I start from the workflow, question the assumptions, then build, ship, and operate
+> the software. 17 years across distributed systems, developer platforms, and
+> full-stack engineering.
 >
-> [Read the proof ↓]   [Message me — I respond to everything]
+> [Explore my work ↓]   [Get in touch]
 
 The headline doubles as the signature visual element (see §5): behind or beneath it,
 a stylized APM trace waterfall — the sequential-vs-parallel Elasticsearch query
 pattern that produced the P99 win. The hero literally shows "infrastructure
 explaining itself."
 
-### Section: The work takes three forms
+### Section: Selected work (Waltz, RCSB PDB, Trading automation, then an "Also" list)
+
+Superseded layout: the original "three forms" structure below is kept for reference.
 
 Three blocks, each: claim → 2–3 sentences → **linked proof artifacts**.
 This linking is the whole point of the site; LinkedIn can't do it.
