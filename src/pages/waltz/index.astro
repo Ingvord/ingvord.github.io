@@ -6,48 +6,96 @@ import Footer from '../../components/Footer.astro';
 
 <Base
   title="Waltz — Igor Khokhriakov"
-  description="A pluggable web frontend for SCADA control systems, built in 2016 when almost no facility had one. Three artifacts outlived it: a reliable SSE event-source library, an event-bus SPA middleware, and a framework-agnostic plugin model."
+  description="A browser interface for scientific control systems, built in 2016 so facility teams could operate instruments and extend the UI with their own components. Ten years of development, 50 releases, adopted across Tango Controls facilities."
 >
   <Nav />
   <main id="main">
     <article class="container case-study">
 
       <header class="cs-header">
-        <p class="section-marker">Case study · pioneered 2016</p>
-        <h1>A web interface for control systems, before control systems had one.</h1>
+        <p class="section-marker">Case study · user-facing platform · since 2016</p>
+        <h1>Instrument control in the browser for scientific facilities.</h1>
         <p class="cs-lead">
-          In 2016, almost no scientific facility ran a browser-based interface to its
-          control system; operators sat at native desktop clients wired to the hardware.
-          Waltz was among the first to put that interface in a browser, for accelerators,
-          synchrotrons, and neutron sources running Tango Controls and other middlewares.
-          Building it early meant solving problems the ecosystem had no patterns for yet,
-          and three of those solutions outlived the application itself.
+          Operators, beamline scientists, and control engineers at accelerators, synchrotrons,
+          and neutron sources ran their instruments through native desktop clients wired to
+          the hardware. Waltz put that work in a browser and let each facility extend it with
+          its own instrument components. I designed it, built it, and maintained it for ten
+          years.
         </p>
         <div class="cs-links">
           <a href="https://github.com/scientific-software-hub/waltz" target="_blank" rel="noopener" class="proof-link">[source]</a>
           <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[packages]</a>
           <a href="https://waltz-docs.readthedocs.io/en/latest/" target="_blank" rel="noopener" class="proof-link">[docs]</a>
           <a href="https://accelconf.web.cern.ch/icalepcs2019/papers/wesh3003.pdf" target="_blank" rel="noopener" class="proof-link">[paper: ICALEPCS 2019]</a>
+          <a href="https://vimeo.com/268669625" target="_blank" rel="noopener" class="proof-link">[video: UI overview 2018]</a>
         </div>
       </header>
 
       <section class="cs-section" data-reveal>
-        <h2>What outlived the app</h2>
+        <h2>Problem</h2>
         <p>
-          A web application is rarely the durable part of an engineering effort. The durable
-          parts of Waltz were the libraries underneath it, each one a solution to a problem
-          that had no off-the-shelf answer in 2016, each published and reusable independently
-          of the host application.
+          A control-room operator needs live values from hundreds of devices, plots, and the
+          ability to change a setting safely. The tools for that were desktop clients tied to
+          one machine and one installation. Every facility also has instruments nobody else
+          has, so each one needs its own panels, and each used to mean a fork or a custom
+          application. Installing, updating, and sharing those panels was slow, which made
+          experiments and commissioning slower.
+        </p>
+      </section>
+
+      <section class="cs-section" data-reveal>
+        <h2>Discovery</h2>
+        <p>
+          The need surfaced through hands-on work at DESY and conversations across the Tango
+          Controls community, where web access to control systems kept coming up as a gap.
+          No formal user research preceded the first version. I built a small working
+          interface early, put it in front of operators and developers, and let their
+          requests shape the roadmap. The 2019 workshops (below) became the structured
+          feedback loop.
+        </p>
+      </section>
+
+      <section class="cs-section" data-reveal>
+        <h2>Decisions</h2>
+        <h3>Browser over another desktop client</h3>
+        <p>
+          A browser removes installation and update friction, works on any operator's machine,
+          and lets a facility share one deployment. The cost was that nobody had solved live
+          hardware streaming in a browser yet, which led to the libraries below.
+        </p>
+
+        <h3>A written contract before the code</h3>
+        <p>
+          The Tango REST API specification came first, as a formal document, before the server
+          code that implemented it. Any conforming server worked with Waltz, and any
+          conforming client worked with any conforming server. The community adopted it as the
+          standard interface between web clients and control systems.
+        </p>
+        <div class="cs-proof">
+          <a href="https://github.com/tango-controls/rest-api" target="_blank" rel="noopener" class="proof-link">[Tango REST spec]</a>
+        </div>
+
+        <h3>Extension without forking</h3>
+        <p>
+          Facilities needed their own instrument widgets, so the plugin contract became the
+          product's main design constraint. A facility adds a widget without touching the
+          core, and that widget survives the next upstream release.
+        </p>
+      </section>
+
+      <section class="cs-section" data-reveal>
+        <h2>What I shipped</h2>
+        <p>
+          The application plus three independently published libraries, each solving a problem
+          that had no off-the-shelf answer in 2016.
         </p>
 
         <h3>A reliable Server-Sent Events source</h3>
         <p>
-          Control systems push a continuous stream of attribute changes; an operator UI that
-          polls for them does not scale and does not stay current. The browser's native
-          <code>EventSource</code> reconnects, but it does not recover missed events, dedupe
-          across reconnects, or multiplex many logical subscriptions over one connection.
-          The SSE event-source library solved those gaps so the rest of the application could
-          treat a live hardware stream as a dependable feed.
+          Operators need live values without polling. The browser's native
+          <code>EventSource</code> reconnects but does not recover missed events, dedupe across
+          reconnects, or multiplex subscriptions over one connection. This library does all
+          three, so the UI can treat a hardware stream as a dependable feed.
         </p>
         <div class="cs-proof">
           <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/eventbus]</a>
@@ -55,12 +103,9 @@ import Footer from '../../components/Footer.astro';
 
         <h3>An event-bus SPA middleware</h3>
         <p>
-          Waltz runs on a thin middleware built
-          around a central event-browser object: an internal bus that routes messages between
-          independently developed components. Components never call each other directly; they
-          publish and subscribe. That decoupling is what later made framework-agnostic plugins
-          possible, because a plugin only needs to speak the bus protocol, not share the host's
-          component model.
+          Independently developed components publish and subscribe on a central bus instead
+          of calling each other. That decoupling made third-party plugins possible, because a
+          plugin only speaks the bus protocol and shares nothing else with the host.
         </p>
         <div class="cs-proof">
           <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/middleware]</a>
@@ -68,13 +113,9 @@ import Footer from '../../components/Footer.astro';
 
         <h3>A framework-agnostic plugin model</h3>
         <p>
-          Widgets register against the bus at startup and resolve at render time. Because the
-          contract is the message protocol, widgets
-          written in different frameworks coexist in one running application: the production
-          build ships Webix widgets, CodeMirror, and Plotly side by side, and the same model
-          accommodates React or Angular widgets without changing core code. A facility adds its
-          own instrument widget without forking the platform, and that widget survives the next
-          upstream release because nothing in core imports it.
+          Widgets register against the bus at startup and resolve at render time. The
+          production build ships Webix widgets, CodeMirror, and Plotly side by side, and the
+          same model accommodates React or Angular widgets without changing core code.
         </p>
         <div class="cs-proof">
           <a href="https://github.com/orgs/waltz-controls/packages" target="_blank" rel="noopener" class="proof-link">[@waltz-controls/tango-rest-client]</a>
@@ -83,34 +124,24 @@ import Footer from '../../components/Footer.astro';
       </section>
 
       <section class="cs-section" data-reveal>
-        <h2>The boundary contract</h2>
+        <h2>Outcome and learning</h2>
         <p>
-          Underneath the plugin model sits the Tango REST API specification, written as a formal
-          document before the server code that implemented it. Any conforming server worked with
-          Waltz; any conforming client worked with any conforming server. The spec was adopted
-          across the Tango Controls community as the standard interface between web clients and
-          control systems. This is the same instinct as the <code>strategy_spec.json</code> in
-          the trading platform: when components deploy independently, the boundary is a
-          documented data contract, not shared code.
+          Three workshops at DESY in 2019 brought developers from multiple facilities together
+          to build extensions collaboratively. Maintainers elsewhere could diagnose and fix
+          issues without me, because the libraries and the plugin contract were independently
+          documented and versioned. The Tango REST specification became the community
+          standard, and Waltz stayed in active development for ten years.
         </p>
-        <div class="cs-proof">
-          <a href="https://github.com/tango-controls/rest-api" target="_blank" rel="noopener" class="proof-link">[Tango REST spec]</a>
-        </div>
-      </section>
-
-      <section class="cs-section" data-reveal>
-        <h2>Leaving the method behind</h2>
         <p>
-          Three workshops at DESY in 2019 brought developers from multiple facilities together to
-          build extensions collaboratively. The goal was for maintainers elsewhere to diagnose and
-          fix issues independently of the original author. The architecture made that possible because the libraries and the
-          plugin contract were independently documented and independently versioned.
+          The lasting lesson: the durable parts of a platform are its contracts and libraries,
+          and the application is the first customer of them. Looking back, I would invest in
+          usage telemetry and structured operator interviews from the first release, which
+          would have replaced informal feedback with measured adoption data.
         </p>
         <div class="cs-proof">
           <a href="https://www.youtube.com/watch?v=rKnVGFP_VCA" target="_blank" rel="noopener" class="proof-link">[video: Workshop I]</a>
           <a href="https://www.youtube.com/watch?v=npj8paRuF0Q" target="_blank" rel="noopener" class="proof-link">[video: Workshop II]</a>
           <a href="https://www.youtube.com/watch?v=2ryBt_Cztb0" target="_blank" rel="noopener" class="proof-link">[video: Workshop III]</a>
-          <a href="https://vimeo.com/268669625" target="_blank" rel="noopener" class="proof-link">[video: UI overview 2018]</a>
         </div>
       </section>
 
@@ -146,10 +177,10 @@ import Footer from '../../components/Footer.astro';
 
       <footer class="cs-footer">
         <p>
-          What this demonstrates: solving infrastructure problems before the ecosystem has
-          patterns for them, and packaging the solutions so they outlast the application that
-          motivated them. The web app was the occasion; the SSE library, the event-bus
-          middleware, and the plugin contract were the lasting work.
+          What this demonstrates: building a product for specialist users, choosing the
+          boundaries that let other teams extend it, and staying with it long enough to see
+          it adopted. The web app was the occasion; the contracts and libraries were the
+          lasting work.
         </p>
         <p style="margin-top: 1.5rem;">
           <a href="/" class="mono">← Back to home</a>
